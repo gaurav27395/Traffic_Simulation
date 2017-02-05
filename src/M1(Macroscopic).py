@@ -135,24 +135,23 @@ south = Label(text="South")
 south.place(x=230,y=480)
 def line_continuous():
 	global westQueueLength,northQueueLength,eastQueueLength,southQueueLength;
-	
 	canvas.create_rectangle(0, 200, 200, 300, fill='gray64') #West
 	canvas.create_line(200, 250, 200-westQueueLength, 250, width=50, fill='blue')
-	west1 = Label(text=""+str(westQueueLength))
+	west1 = Label(text=""+str(westQueueLength).zfill(2))
 	west1.place(x=120,y=240)
 	canvas.create_rectangle(200, 0, 300, 200, fill='gray64') #North
 	canvas.create_line(250, 200, 250, 200-northQueueLength, width=50, fill='orange')
-	north1 = Label(text=""+str(northQueueLength))
+	north1 = Label(text=""+str(northQueueLength).zfill(2))
 	north1.place(x=240,y=80)
 	canvas.create_rectangle(300, 200, 500, 300, fill='gray64') #East
 	canvas.create_line(300, 250, 300+eastQueueLength, 250, width=50, fill='navy')
-	east1 = Label(text=""+str(eastQueueLength))
+	east1 = Label(text=""+str(eastQueueLength).zfill(2))
 	east1.place(x=350,y=240)
 	canvas.create_rectangle(200, 300, 300, 500, fill='gray64') #South
 	canvas.create_line(250, 300, 250, 300+southQueueLength, width=50, fill='brown')
-	south1 = Label(text=""+str(southQueueLength))
+	south1 = Label(text=""+str(southQueueLength).zfill(2))
 	south1.place(x=240,y=400)
-	Timer(2,line_continuous).start()
+	Timer(0.5,line_continuous).start()
 
 #Begin Simulation Process
 
@@ -164,5 +163,5 @@ Timer(arrival_north,arrival_north_fn).start()
 Timer(arrival_south,arrival_south_fn).start()
 Timer(removeTimeout,removeFromQueue).start()
 printTimer=Timer(1,printInformation).start()
-Timer(2,line_continuous).start()
+Timer(0.5,line_continuous).start()
 mainloop()
