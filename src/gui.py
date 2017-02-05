@@ -15,12 +15,9 @@ z=250
 def line_continuous():
 	global x,y,u
 	canvas.create_rectangle(0, 200, 200, 300, fill='black')
-
-	canvas.create_line(u, x, y, z, dash=(3,5),fill='white')
-	
+	canvas.create_line(u, x, y, z, dash=(3,5),fill='white')	
 	u=u+10
-	y=y-10
-	
+	y=y-10	
 	Timer(0.05,line_continuous).start()
 
 

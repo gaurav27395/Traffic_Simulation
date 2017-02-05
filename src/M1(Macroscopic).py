@@ -1,5 +1,6 @@
 import random
 from threading import Timer
+from Tkinter import *
 
 #Current Direction from which vehicles can move
 allowedDirection="north"
@@ -27,7 +28,7 @@ trafficDistribution=None
 
 #The number of vehicles which have crossed and left the respective queue whenever the timer expires.
 #Caution: This is not calucluated per phase cycle rather per timer expiry.
-vehiclesCrossingPerTimerExpiry=2
+vehiclesCrossingPerTimerExpiry=25
 
 #Initially all the directions will be allocated a random queue length between 5-10
 eastQueueLength=random.randint(5,10)
@@ -49,7 +50,7 @@ def removeFromQueue():
     queueVariable=directionDictionary[allowedDirection]
 
     #If vehicles are pressent then make them cross the intersection
-    if globals()[queueVariable]>=0:
+    if globals()[queueVariable]>vehiclesCrossingPerTimerExpiry:
         globals()[queueVariable]-=vehiclesCrossingPerTimerExpiry
 
     Timer(removeTimeout,removeFromQueue).start()
@@ -72,6 +73,47 @@ def printInformation():
     print("***************************************************************\n")
     Timer(1,printInformation).start()
 
+
+canvas = Canvas(width=500, height=500, bg='gray11')  
+canvas.pack(expand=YES, fill=BOTH)                
+canvas.create_rectangle(200, 200, 300, 300, fill='gray26')
+canvas.create_rectangle(25, 25, 175, 175, fill='green4')
+canvas.create_rectangle(325, 25, 475, 175, fill='green4')
+canvas.create_rectangle(25, 325, 175, 475, fill='green4')
+canvas.create_rectangle(325, 325, 475, 475, fill='green4')
+canvas.create_rectangle(200, 0, 300, 200, fill='grey') #North
+canvas.create_rectangle(0, 200, 200, 300, fill='grey') #West
+canvas.create_rectangle(300, 200, 500, 300, fill='grey') #East
+canvas.create_rectangle(200, 300, 300, 500, fill='grey') #South
+west = Label(text="West")
+west.place(x=20,y=240)
+east = Label(text="East")
+east.place(x=450,y=240)
+north = Label(text="North")
+north.place(x=230,y=20)
+south = Label(text="South")
+south.place(x=230,y=480)
+def line_continuous():
+	global westQueueLength,northQueueLength,eastQueueLength,southQueueLength;
+	
+	canvas.create_rectangle(0, 200, 200, 300, fill='gray64') #West
+	canvas.create_line(200, 250, 200-westQueueLength, 250, width=50, fill='blue')
+	west1 = Label(text=""+str(westQueueLength))
+	west1.place(x=120,y=240)
+	canvas.create_rectangle(200, 0, 300, 200, fill='gray64') #North
+	canvas.create_line(250, 200, 250, 200-northQueueLength, width=50, fill='orange')
+	north1 = Label(text=""+str(northQueueLength))
+	north1.place(x=240,y=80)
+	canvas.create_rectangle(300, 200, 500, 300, fill='gray64') #East
+	canvas.create_line(300, 250, 300+eastQueueLength, 250, width=50, fill='navy')
+	east1 = Label(text=""+str(eastQueueLength))
+	east1.place(x=350,y=240)
+	canvas.create_rectangle(200, 300, 300, 500, fill='gray64') #South
+	canvas.create_line(250, 300, 250, 300+southQueueLength, width=50, fill='brown')
+	south1 = Label(text=""+str(southQueueLength))
+	south1.place(x=240,y=400)
+	Timer(0.5,line_continuous).start()
+
 #Begin Simulation Process
 
 #Create 3 different Timer objects for handling 3 different timeouts.
@@ -79,3 +121,5 @@ Timer(trafficTimeout,changeDirection).start()
 Timer(addTimeout,addToQueue).start()
 Timer(removeTimeout,removeFromQueue).start()
 printTimer=Timer(1,printInformation).start()
+Timer(0.5,line_continuous).start()
+mainloop()
