@@ -142,19 +142,19 @@ def traffic_lights():
 def line_continuous():
 	global westQueueLength,northQueueLength,eastQueueLength,southQueueLength;
 	canvas.create_rectangle(0, 300, 550, 460, fill='gray64') #West
-	canvas.create_line(550, 380, 550-westQueueLength, 380, width=50, fill='blue')
+	canvas.create_line(550, 380, 550-(westQueueLength*4), 380, width=50, fill='blue')
 	west1 = Label(text=""+str(westQueueLength).zfill(2))
 	west1.place(x=100,y=380)
 	canvas.create_rectangle(550, 0, 750, 300, fill='gray64') #North
-	canvas.create_line(650, 300, 650, 300-northQueueLength, width=50, fill='orange')
+	canvas.create_line(650, 300, 650, 300-(northQueueLength*4), width=50, fill='orange')
 	north1 = Label(text=""+str(northQueueLength).zfill(2))
 	north1.place(x=645,y=100)
 	canvas.create_rectangle(750, 300, 1300, 460, fill='gray64') #East
-	canvas.create_line(750, 380, 750+eastQueueLength, 380, width=50, fill='navy')
+	canvas.create_line(750, 380, 750+(eastQueueLength*4), 380, width=50, fill='navy')
 	east1 = Label(text=""+str(eastQueueLength).zfill(2))
 	east1.place(x=1200,y=380)
 	canvas.create_rectangle(550, 460, 750, 800, fill='gray64') #South
-	canvas.create_line(650, 460, 650, 460+southQueueLength, width=50, fill='brown')
+	canvas.create_line(650, 460, 650, 460+(southQueueLength*4), width=50, fill='brown')
 	south1 = Label(text=""+str(southQueueLength).zfill(2))
 	south1.place(x=645,y=650)
 
