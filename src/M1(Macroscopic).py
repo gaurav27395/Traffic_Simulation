@@ -114,43 +114,44 @@ def printInformation():
     Timer(2,printInformation).start()
 
 
-canvas = Canvas(width=500, height=500, bg='gray11')  
+canvas = Canvas(width=1300, height=800, bg='gray11')  
 canvas.pack(expand=YES, fill=BOTH)                
-canvas.create_rectangle(200, 200, 300, 300, fill='gray26')
-canvas.create_rectangle(25, 25, 175, 175, fill='green4')
-canvas.create_rectangle(325, 25, 475, 175, fill='green4')
-canvas.create_rectangle(25, 325, 175, 475, fill='green4')
-canvas.create_rectangle(325, 325, 475, 475, fill='green4')
-canvas.create_rectangle(200, 0, 300, 200, fill='grey') #North
-canvas.create_rectangle(0, 200, 200, 300, fill='grey') #West
-canvas.create_rectangle(300, 200, 500, 300, fill='grey') #East
-canvas.create_rectangle(200, 300, 300, 500, fill='grey') #South
-west = Label(text="West")
-west.place(x=20,y=240)
-east = Label(text="East")
-east.place(x=450,y=240)
-north = Label(text="North")
-north.place(x=230,y=20)
-south = Label(text="South")
-south.place(x=230,y=480)
+canvas.create_rectangle(550, 300, 750, 460, fill='gray26')
+canvas.create_rectangle(0, 0, 550, 300, fill='green4')
+canvas.create_rectangle(0, 460, 550, 800, fill='green4')
+canvas.create_rectangle(750, 460, 1300, 800, fill='green4')
+canvas.create_rectangle(750, 0, 1300, 300, fill='green4')
+canvas.create_rectangle(550, 0, 750, 300, fill='grey') #North
+canvas.create_rectangle(0, 300, 550, 460, fill='grey') #West
+canvas.create_rectangle(550, 460, 750, 800, fill='grey') #South
+canvas.create_rectangle(750, 300, 1300, 460, fill='grey') #East
+west = Label(text="W",font=("Arial", 20, "bold"))
+west.place(x=40,y=365)
+east = Label(text="E",font=("Arial", 20, "bold"))
+east.place(x=1260,y=365)
+north = Label(text="N",font=("Arial", 20, "bold"))
+north.place(x=650,y=40)
+south = Label(text="S",font=("Arial", 20, "bold"))
+south.place(x=650,y=700)
+
 def line_continuous():
 	global westQueueLength,northQueueLength,eastQueueLength,southQueueLength;
-	canvas.create_rectangle(0, 200, 200, 300, fill='gray64') #West
-	canvas.create_line(200, 250, 200-westQueueLength, 250, width=50, fill='blue')
+	canvas.create_rectangle(0, 300, 550, 460, fill='gray64') #West
+	canvas.create_line(550, 380, 550-westQueueLength, 380, width=50, fill='blue')
 	west1 = Label(text=""+str(westQueueLength).zfill(2))
-	west1.place(x=120,y=240)
-	canvas.create_rectangle(200, 0, 300, 200, fill='gray64') #North
-	canvas.create_line(250, 200, 250, 200-northQueueLength, width=50, fill='orange')
+	west1.place(x=100,y=380)
+	canvas.create_rectangle(550, 0, 750, 300, fill='gray64') #North
+	canvas.create_line(650, 300, 650, 300-northQueueLength, width=50, fill='orange')
 	north1 = Label(text=""+str(northQueueLength).zfill(2))
-	north1.place(x=240,y=80)
-	canvas.create_rectangle(300, 200, 500, 300, fill='gray64') #East
-	canvas.create_line(300, 250, 300+eastQueueLength, 250, width=50, fill='navy')
+	north1.place(x=650,y=100)
+	canvas.create_rectangle(750, 300, 1300, 460, fill='gray64') #East
+	canvas.create_line(750, 380, 750+eastQueueLength, 380, width=50, fill='navy')
 	east1 = Label(text=""+str(eastQueueLength).zfill(2))
-	east1.place(x=350,y=240)
-	canvas.create_rectangle(200, 300, 300, 500, fill='gray64') #South
-	canvas.create_line(250, 300, 250, 300+southQueueLength, width=50, fill='brown')
+	east1.place(x=1200,y=380)
+	canvas.create_rectangle(550, 460, 750, 800, fill='gray64') #South
+	canvas.create_line(650, 460, 650, 460+southQueueLength, width=50, fill='brown')
 	south1 = Label(text=""+str(southQueueLength).zfill(2))
-	south1.place(x=240,y=400)
+	south1.place(x=650,y=650)
 	Timer(0.5,line_continuous).start()
 
 #Begin Simulation Process
