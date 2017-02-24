@@ -99,6 +99,29 @@ def removeFromQueue():
 def changeDirection():
     globals()["directionIndex"]=(directionIndex+1)%4
     globals()["allowedDirection"]=directionArray[directionIndex]
+
+    if allowedDirection == "north":
+    	red1=canvas.create_oval(10,10,40,40, fill="red")
+    	red2=canvas.create_oval(10,50,40,80, fill="red")
+    	red3=canvas.create_oval(10,90,40,120, fill="dark green")
+    	red4=canvas.create_oval(10,130,40,160, fill="red")
+    elif allowedDirection == "south":
+    	red1=canvas.create_oval(10,10,40,40, fill="red")
+    	red2=canvas.create_oval(10,50,40,80, fill="red")
+    	red3=canvas.create_oval(10,90,40,120, fill="red")
+    	red4=canvas.create_oval(10,130,40,160, fill="dark green")
+    elif allowedDirection == "east":
+    	red1=canvas.create_oval(10,10,40,40, fill="red")
+    	red2=canvas.create_oval(10,50,40,80, fill="dark green")
+    	red3=canvas.create_oval(10,90,40,120, fill="red")
+    	red4=canvas.create_oval(10,130,40,160, fill="red")
+    elif allowedDirection == "west":
+    	red1=canvas.create_oval(10,10,40,40, fill="dark green")
+    	red2=canvas.create_oval(10,50,40,80, fill="red")
+    	red3=canvas.create_oval(10,90,40,120, fill="red")
+    	red4=canvas.create_oval(10,130,40,160, fill="red")
+
+
     Timer(trafficTimeout,changeDirection).start()
 
 #Prints the current information
@@ -112,26 +135,9 @@ def printInformation():
     print("***************************************************************\n")
     Timer(2,printInformation).start()
 
-
-canvas = Canvas(width=1300, height=800, bg='gray11')  
-canvas.pack(expand=YES, fill=BOTH)                
-canvas.create_rectangle(550, 300, 750, 460, fill='gray26')
-canvas.create_rectangle(0, 0, 550, 300, fill='green4')
-canvas.create_rectangle(0, 460, 550, 800, fill='green4')
-canvas.create_rectangle(750, 460, 1300, 800, fill='green4')
-canvas.create_rectangle(750, 0, 1300, 300, fill='green4')
-canvas.create_rectangle(550, 0, 750, 300, fill='grey') #North
-canvas.create_rectangle(0, 300, 550, 460, fill='grey') #West
-canvas.create_rectangle(550, 460, 750, 800, fill='grey') #South
-canvas.create_rectangle(750, 300, 1300, 460, fill='grey') #East
-west = Label(text="W",font=("Arial", 20, "bold"))
-west.place(x=40,y=365)
-east = Label(text="E",font=("Arial", 20, "bold"))
-east.place(x=1260,y=365)
-north = Label(text="N",font=("Arial", 20, "bold"))
-north.place(x=640,y=40)
-south = Label(text="S",font=("Arial", 20, "bold"))
-south.place(x=640,y=700)
+def traffic_lights():
+	Timer(0.0,traffic_lights).start()
+	#green=win.create_oval(5,105,50,150, fill="black")
 
 def line_continuous():
 	global westQueueLength,northQueueLength,eastQueueLength,southQueueLength;
@@ -151,11 +157,50 @@ def line_continuous():
 	canvas.create_line(650, 460, 650, 460+southQueueLength, width=50, fill='brown')
 	south1 = Label(text=""+str(southQueueLength).zfill(2))
 	south1.place(x=645,y=650)
-	Timer(0.5,line_continuous).start()
 
+	#tk.update()
+	
+	Timer(0.001,line_continuous).start()
+
+
+
+#create canvas
+canvas = Canvas(width=1300, height=800, bg='gray11')  
+canvas.pack(expand=YES, fill=BOTH)                
+canvas.create_rectangle(550, 300, 750, 460, fill='gray26')
+canvas.create_rectangle(0, 0, 550, 300, fill='navajo white')
+canvas.create_rectangle(0, 460, 550, 800, fill='navajo white')
+canvas.create_rectangle(750, 460, 1300, 800, fill='navajo white')
+canvas.create_rectangle(750, 0, 1300, 300, fill='navajo white')
+canvas.create_rectangle(550, 0, 750, 300, fill='grey') #North
+canvas.create_rectangle(0, 300, 550, 460, fill='grey') #West
+canvas.create_rectangle(550, 460, 750, 800, fill='grey') #South
+canvas.create_rectangle(750, 300, 1300, 460, fill='grey') #East
+west = Label(text="W",font=("Arial", 20, "bold"))
+west.place(x=40,y=365)
+east = Label(text="E",font=("Arial", 20, "bold"))
+east.place(x=1260,y=365)
+north = Label(text="N",font=("Arial", 20, "bold"))
+north.place(x=640,y=40)
+south = Label(text="S",font=("Arial", 20, "bold"))
+south.place(x=640,y=700)
+red1=canvas.create_oval(10,10,40,40, fill="red")
+red2=canvas.create_oval(10,50,40,80, fill="red")
+red3=canvas.create_oval(10,90,40,120, fill="red")
+red4=canvas.create_oval(10,130,40,160, fill="red")
+west = Label(text="WEST",font=("Arial", 20, "bold"))
+west.place(x=45,y=10)
+east = Label(text="EAST",font=("Arial", 20, "bold"))
+east.place(x=45,y=50)
+north = Label(text="NORTH",font=("Arial", 20, "bold"))
+north.place(x=45,y=90)
+south = Label(text="SOUTH",font=("Arial", 20, "bold"))
+south.place(x=45,y=130)
 #Begin Simulation Process
 
 #Create 3 different Timer objects for handling 3 different timeouts.
+
+
 Timer(trafficTimeout,changeDirection).start()
 Timer(arrival_east,arrival_east_fn).start()
 Timer(arrival_west,arrival_west_fn).start()
@@ -163,5 +208,6 @@ Timer(arrival_north,arrival_north_fn).start()
 Timer(arrival_south,arrival_south_fn).start()
 Timer(removeTimeout,removeFromQueue).start()
 printTimer=Timer(1,printInformation).start()
-Timer(0.5,line_continuous).start()
+Timer(0.001,line_continuous).start()
+#Timer(0.5,traffic_lights).start()
 mainloop()
