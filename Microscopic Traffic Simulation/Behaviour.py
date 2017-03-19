@@ -20,9 +20,6 @@ def generateCarFollowingScore(vehicle):
     if (distance <= 20):
         return 10
 
-def generateRoadFollowingScore():
-    print()
-
 def generateTrafficLightScore(vehicle):
     trafficlight_position=vehicle.getLaneSignalPosition();
     trafficlight_diatance = math.hypot(trafficlight_position[0] - vehicle.x, trafficlight_position[1] - vehicle.y)
@@ -30,12 +27,6 @@ def generateTrafficLightScore(vehicle):
         return 10;
     else:
         return 0;
-
-def generateChangeDirectionScore(vehicle):
-    print()
-
-def generateEmergencyBrakingScore():
-    print()
 
 def carFollowExecute(vehicle):
     #distance = vehicle.getDistancetoNearestVehicle();
