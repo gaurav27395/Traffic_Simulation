@@ -1,6 +1,7 @@
 #This module represents a vehicle and its different properties
 import Environment.py
 import Driver.py
+import math
 class Vehicle:
     def __init__(self,id,typeOfDriver,type,direction,fixed):
         self.id=id
@@ -22,3 +23,8 @@ class Vehicle:
 
     def getVisibilityRectangle(self):
         positionMap=Environment.getVehiclePositions()
+
+    def getLaneSignalPosition(self):
+        lanePosition = self.currentLane.trafficPosition()
+        selfPosition = self.instantaneousPosition
+        return hypot((lanePosition[0]-selfPosition[0]),(lanePosition[1]-selfPosition[1]))
