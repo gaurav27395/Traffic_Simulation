@@ -2,11 +2,22 @@ import math
 
 def generateAllScore(vehicle):
     carfollowingscore= generateCarFollowingScore(vehicle);
-    roadfollowingscore = generateRoadFollowingScore(vehicle);
+    #roadfollowingscore = generateRoadFollowingScore(vehicle);
     trafficlightscore = generateTrafficLightScore(vehicle);
     changedirectionscore = generateChangeDirectionScore(vehicle);
     emergencybrakingscore = generateEmergencyBrakingScore(vehicle);
+    scoretuple=[carfollowingscore,roadfollowingscore,trafficlightscore, changedirectionscore,emergencybrakingscore]
+    maxscore=max(scoretuple)
+    if(maxscore==carfollowingscore)
+    	carFollowExecute(vehicle)
+    if(maxscore==trafficlightscore)
+    	trafficLightExecute(vehicle)
+    if(maxscore==changedirectionscore)
+    	generateChangeDirectionExecute(vehicle)
+    if(maxscore==emergencybrakingscore)
+    	emergencyBrakingExecute(vehicle)
 
+# Car Following Score
 def generateCarFollowingScore(vehicle):
     distance=vehicle.getDistancetoNearestVehicle();
     if(distance>= 50):
@@ -18,15 +29,35 @@ def generateCarFollowingScore(vehicle):
     if (distance>= 20 and distance< 30):
         return 7.5
     if (distance <= 20):
-        return 10
+        return 8
 
+# Traffic light Score
 def generateTrafficLightScore(vehicle):
     trafficlight_position=vehicle.getLaneSignalPosition();
-    trafficlight_diatance = math.hypot(trafficlight_position[0] - vehicle.x, trafficlight_position[1] - vehicle.y)
-    if(trafficlight_diatance<=10 and vehicle.getDistancetoNearestVehicle()==0 ):
+    trafficlight_diatance = math.hypot(trafficlight_position[0] - vehicle.position[0], trafficlight_position[1] - vehicle.position[1])
+    if(trafficlight_diatance<=10 and vehicle.getDistancetoNearestVehicle()>=10 ):
         return 10;
     else:
         return 0;
+
+#Genrate Change Direction Score
+def generateChangeDirectionScore(vehicle):
+	position = vehicle.getLaneSignalPosition()
+
+	if vehicle.position[1]==position[1] and (vehicle.turnLeft or vehcle.turnRight):
+		return 9
+
+	else 
+		return 0
+
+# Emergency Braking Score:
+def emergencyBrakingScore(vehicle):
+	for id in positionMap:
+		distance = vehicle.getDistanceToNearestVehicle()
+		if distance < 2:
+			return 10
+		else 
+			return 0
 
 def carFollowExecute(vehicle):
     #distance = vehicle.getDistancetoNearestVehicle();
@@ -37,30 +68,6 @@ def carFollowExecute(vehicle):
 def trafficLightExecute(vehicle):
     if(vehicle.cuurentLane.trafficsignal=="Red"):
         vehicle.stop();
-
-# Emergency Braking Score:
-
-def emergencyBrakingScore(vehicle):
-	for id in positionMap:
-		distance = vehicle.getDistanceToNearestVehicle()
-		if distance < 2:
-			return 10
-		else 
-			return 0
-
-#Genrate Change Direction Score
-
-def generateChangeDirectionScore(vehicle):
-	position = vehicle.getLaneSignalPosition()
-
-	if vehicle.position[1]==position[1] and (vehicle.turnLeft or vehcle.turnRight):
-		return 10
-
-	else 
-		return 0
-
-def emergencyDirectionExecute(vehicle):
-	vehicle.stop();
 
 def generateChangeDirectionExecute(vehicle):
 	lane = vehicle.currentLane()
@@ -82,5 +89,5 @@ def generateChangeDirectionExecute(vehicle):
 	elif lane == 'west' and direction == 'left' :
 		vehicle.position[0] , vehicle.position[1] = vehicle.position[1] , vehicle.position[0]
 
-
-
+def emergencyBrakingExecute(vehicle):
+	vehicle.stop();
