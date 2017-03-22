@@ -34,6 +34,10 @@ class Vehicle:
         print(self.instantaneousVelocity)
         print(self.instantaneousPosition)
         print(self.position)
+    def getLaneSignalPosition(self):
+        lanePosition = self.currentLane.trafficPosition()
+        selfPosition = self.instantaneousPosition
+        return hypot((lanePosition[0]-selfPosition[0]),(lanePosition[1]-selfPosition[1]))
 
 v1=Vehicle(24244,-2,"aggressive","car","north")
 a=v1.print()
