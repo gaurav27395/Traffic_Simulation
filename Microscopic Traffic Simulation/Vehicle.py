@@ -42,15 +42,26 @@ class Vehicle:
 
     def vehicleAcceleration(self):
         if self.direction == 'north' or self.direction == 'south':
-            self.position[1] = self.instantaneousVelocity*0.05 + self.instantaneousAcceleration*0.5*0.05*0.05 # ut+0.5at^2
+            a = self.instantaneousVelocity*0.05 + self.instantaneousAcceleration*0.5*0.05*0.05 # ut+0.5at^2
+            self.position[1]=self.position[1]+a
+            self.instantaneousVelocity = self.instantaneousAcceleration*0.05
         if self.direction == 'east' or self.direction == 'west':
-            self.position[0] = self.instantaneousVelocity*0.05 + self.instantaneousAcceleration*0.5*0.05*0.05 # ut+0.5at^2
+            a = self.instantaneousVelocity*0.05 + self.instantaneousAcceleration*0.5*0.05*0.05 # ut+0.5at^2
+            self.position[0]=self.position[0]+a
+            self.instantaneousVelocity = self.instantaneousAcceleration*0.05
 
     def vehicleBrake(self):
         if self.direction == 'north' or self.direction == 'south':
-            self.position[1] = self.instantaneousVelocity*0.05 + self.instantaneousAcceleration*0.5*0.05*0.05 # ut+0.5at^2
+            a = self.instantaneousVelocity*0.05 + self.instantaneousAcceleration*0.5*0.05*0.05 # ut+0.5at^2
+            if a > 0 :
+                self.position[1]=self.position[1]+a
+                self.instantaneousVelocity = self.instantaneousAcceleration*0.05
         if self.direction == 'east' or self.direction == 'west':
-            self.position[0] = self.instantaneousVelocity*0.05 + self.instantaneousAcceleration*0.5*0.05*0.05 # ut+0.5at^2
+            a = self.instantaneousVelocity*0.05 + self.instantaneousAcceleration*0.5*0.05*0.05 # ut+0.5at^2
+            if a > 0 :
+                self.position[0]=self.position[0]+a
+                self.instantaneousVelocity = self.instantaneousAcceleration*0.05
+
 
 
 
