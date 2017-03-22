@@ -58,30 +58,6 @@ class Vehicle:
         selfPosition = self.instantaneousPosition
         return hypot((lanePosition[0]-selfPosition[0]),(lanePosition[1]-selfPosition[1]))
 
-    def vehicleAcceleration(self):
-        if self.direction == 'north' or self.direction == 'south':
-            a = self.instantaneousVelocity*0.05 + self.instantaneousAcceleration*0.5*0.05*0.05 # ut+0.5at^2
-            self.position[1]=self.position[1]+a
-            self.instantaneousVelocity = self.instantaneousAcceleration*0.05
-        if self.direction == 'east' or self.direction == 'west':
-            a = self.instantaneousVelocity*0.05 + self.instantaneousAcceleration*0.5*0.05*0.05 # ut+0.5at^2
-            self.position[0]=self.position[0]+a
-            self.instantaneousVelocity = self.instantaneousAcceleration*0.05
-
-    def vehicleBrake(self):
-        if self.direction == 'north' or self.direction == 'south':
-            a = self.instantaneousVelocity*0.05 + self.instantaneousAcceleration*0.5*0.05*0.05 # ut+0.5at^2
-            if a > 0 :
-                self.position[1]=self.position[1]+a
-                self.instantaneousVelocity = self.instantaneousAcceleration*0.05
-        if self.direction == 'east' or self.direction == 'west':
-            a = self.instantaneousVelocity*0.05 + self.instantaneousAcceleration*0.5*0.05*0.05 # ut+0.5at^2
-            if a > 0 :
-                self.position[0]=self.position[0]+a
-                self.instantaneousVelocity = self.instantaneousAcceleration*0.05
-
-
-
 
 if __name__ == "__main__":
     print "yes"
