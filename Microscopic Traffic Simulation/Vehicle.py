@@ -1,9 +1,13 @@
 #This module represents a vehicle and its different properties
 from Environment import *
 from Driver import *
-
+import math
 class Vehicle:
-    def __init__(self,id,fixed,typeOfDriver,type,direction):
+    vehicleTypeMap = {"bike":1,"car":2,"truck":3}
+    visibilityRectangle = 10
+    speedOfNearestVehicle = 0
+    type = ""
+    def __init__(self,id,fixed,typeOfDriver,type,direction,currentLane):
         self.id=id
         self.type=type
         self.fixed=fixed
@@ -17,23 +21,37 @@ class Vehicle:
             self.position=[fixed,self.instantaneousPosition]
         if(direction=="east" or direction=="west"):
             self.position=[self.instantaneousPosition,fixed]
-                                                                                                      
+            
     def selfSense(self):
          return {"id":self.id,"type":self.type,"driver":self.driver.type,"appliedPressure":self.appliedPressure,"instantaneousAcceleration":self.instantaneousAcceleration,"instantaneousVelocity":self.instantaneousVelocity,"instantaneousPosition":self.instantaneousPosition}
 
     def getVisibilityRectangle(self):
         positionMap=getVehiclePositions()
 
-    def print(self):
-        print(self.id)
-        print(self.type)
-        print(self.driver.type)
-        print(self.driver.gapLimit)
-        print(self.direction)
-        print(self.instantaneousAcceleration)
-        print(self.instantaneousVelocity)
-        print(self.instantaneousPosition)
-        print(self.position)
+    def speedToNearestVehicle(self):
+        return speedOfNearestVehicle
+
+    #Take vehicles from visibility rectangle only
+
+    def getDistancetoNearestVehicle(self):
+        carDictionary = {}
+        leftCoordinate = [(self.position[0] - vehicleTypeMap[self.type]/2),(self.position[1] + vehicleTypeMap[self.type]/2)]
+        rightCoordinate = [(self.position[0] + vehicleTypeMap[self.type]/2),(self.position[1] + vehicleTypeMap[self.type]/2)]
+        upLeftCoordinate = [leftCoordinate[0],leftCoordinate[1]+visibilityRectangle]
+        upRightCoordinate = [rightCoordinate[0],rightCoordinate[1]+visibilityRectangle]
+        carDictionary = env.getVehiclePositions()
+        nearestVehicle = [0,0]
+        distance = 400
+        for key, value in carDictionary.iteritems():
+            if (value.position[0] > leftCoordinate[0] and value.position[0] < rightCoordinate[0]) and (value.position[1] > rightCoordinate[1] and value.position[1] < upRightCoordinate[1]):            
+                if math.hypot((value.position[0]-self.position[0]),(value.position[1]-self.position[1])) < distance:
+                    distance = math.hypot((value.position[0]-self.position[0]),(value.position[1]-self.position[1]))
+                    nearestVehicle[0] = value.position[0]
+                    nearestVehicle[1] = value.position[1]
+                    speedOfNearestVehicle = value.instantaneousVelocity
+        return (nearestVehicle,distance)
+
+   
     
     def getLaneSignalPosition(self):
         lanePosition = self.currentLane.trafficPosition()
@@ -65,7 +83,8 @@ class Vehicle:
 
 
 
-v1=Vehicle(24244,-2,"aggressive","car","north")
-a=v1.print()
-a=v1.selfSense()
-print(a)
+if __name__ == "__main__":
+    print "yes"
+    v1=Vehicle(24244,-2,"aggressive","car","north","north")
+    a=v1.selfSense()
+    print(a)
