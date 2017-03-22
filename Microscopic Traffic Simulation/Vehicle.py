@@ -34,10 +34,25 @@ class Vehicle:
         print(self.instantaneousVelocity)
         print(self.instantaneousPosition)
         print(self.position)
+    
     def getLaneSignalPosition(self):
         lanePosition = self.currentLane.trafficPosition()
         selfPosition = self.instantaneousPosition
         return hypot((lanePosition[0]-selfPosition[0]),(lanePosition[1]-selfPosition[1]))
+
+    def vehicleAcceleration(self):
+        if self.direction == 'north' or self.direction == 'south':
+            self.position[1] = self.instantaneousVelocity*0.05 + self.instantaneousAcceleration*0.5*0.05*0.05 # ut+0.5at^2
+        if self.direction == 'east' or self.direction == 'west':
+            self.position[0] = self.instantaneousVelocity*0.05 + self.instantaneousAcceleration*0.5*0.05*0.05 # ut+0.5at^2
+
+    def vehicleBrake(self):
+        if self.direction == 'north' or self.direction == 'south':
+            self.position[1] = self.instantaneousVelocity*0.05 + self.instantaneousAcceleration*0.5*0.05*0.05 # ut+0.5at^2
+        if self.direction == 'east' or self.direction == 'west':
+            self.position[0] = self.instantaneousVelocity*0.05 + self.instantaneousAcceleration*0.5*0.05*0.05 # ut+0.5at^2
+
+
 
 v1=Vehicle(24244,-2,"aggressive","car","north")
 a=v1.print()
