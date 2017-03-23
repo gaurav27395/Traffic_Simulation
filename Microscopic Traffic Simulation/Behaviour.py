@@ -2,7 +2,7 @@ import math
 
 def generateAllScore(vehicle):
     carfollowingscore= generateCarFollowingScore(vehicle);
-    #roadfollowingscore = generateRoadFollowingScore(vehicle);
+    roadfollowingscore = 0
     trafficlightscore = generateTrafficLightScore(vehicle);
     changedirectionscore = generateChangeDirectionScore(vehicle);
     emergencybrakingscore = generateEmergencyBrakingScore(vehicle);
@@ -51,13 +51,13 @@ def generateChangeDirectionScore(vehicle):
 		return 0
 
 # Emergency Braking Score:
-def emergencyBrakingScore(vehicle):
-	for id in positionMap:
-		distance = vehicle.getDistanceToNearestVehicle()
-		if distance < 2:
-			return 10
-		else 
-			return 0
+def generateEmergencyBrakingScore(vehicle):
+	distance = vehicle.getDistanceToNearestVehicle()
+
+	if distance < 2:
+		return 10
+	else:
+		return 0
 
 def carFollowExecute(vehicle):
     #distance = vehicle.getDistancetoNearestVehicle();
