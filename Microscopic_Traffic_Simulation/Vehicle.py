@@ -1,6 +1,6 @@
 #This module represents a vehicle and its different properties
-from Microscopic.Environment import *
-from Microscopic.Driver import *
+from Environment import *
+from Driver import *
 import math
 class Vehicle:
 
@@ -88,16 +88,29 @@ class Vehicle:
             self.position[0] = self.position[0] - temp
             self.instantaneousVelocity = self.instantaneousAcceleration * 1
 
-    def pressBrake(self):
-        if self.direction == 'northRight' or self.direction == 'southRight':
-            temp = self.instantaneousVelocity * 1 + self.instantaneousAcceleration * 0.5 * 1 * 1  # ut+0.5at^2
-            if a > 0:
-                self.position[1] = self.position[1] + temp
-                self.instantaneousVelocity = self.instantaneousAcceleration * 1
-        if self.direction == 'eastRight' or self.direction == 'westRight':
-            a = self.instantaneousVelocity * 1 + self.instantaneousAcceleration * 0.5 * 1 * 1  # ut+0.5at^2
-            if a > 0:
-                self.position[0] = self.position[0] + a
-                self.instantaneousVelocity = self.instantaneousAcceleration * 1
+        def pressBrake(self):
+            if self.direction == 'northRight':
+                a = self.instantaneousVelocity * 1 - self.instantaneousAcceleration * 0.5 * 1 * 1  # ut+0.5at^2
+                if a > 0:
+                    self.position[1] = self.position[1] - a
+                    self.instantaneousVelocity = self.instantaneousAcceleration * 1
+
+                if self.direction == 'southLeft':
+                    a = self.instantaneousVelocity * 1 - self.instantaneousAcceleration * 0.5 * 1 * 1  # ut+0.5at^2
+                if a > 0:
+                    self.position[1] = self.position[1] + a
+                    self.instantaneousVelocity = self.instantaneousAcceleration * 1
+
+            if self.direction == 'westUp':
+                a = self.instantaneousVelocity * 1 - self.instantaneousAcceleration * 0.5 * 1 * 1  # ut+0.5at^2
+                if a > 0:
+                    self.position[0] = self.position[0] + a
+                    self.instantaneousVelocity = self.instantaneousAcceleration * 1
+
+                if self.direction == 'eastDown':
+                    a = self.instantaneousVelocity * 1 - self.instantaneousAcceleration * 0.5 * 1 * 1  # ut+0.5at^2
+                if a > 0:
+                    self.position[0] = self.position[0] - a
+                    self.instantaneousVelocity = self.instantaneousAcceleration * 1
 
 
