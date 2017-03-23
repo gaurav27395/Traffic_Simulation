@@ -1,8 +1,8 @@
 #Controls the operation of a vehicle
-from Microscopic.Driver import *
-from Microscopic.Environment import *
-from Microscopic.Behaviour import *
-from Microscopic.Vehicle import *
+from Driver import *
+from Environment import *
+from Behaviour import *
+from Vehicle import *
 from threading import Timer
 
 vehicle=Vehicle("1234",3,"aggressive","bike","northRight")

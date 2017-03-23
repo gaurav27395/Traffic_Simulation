@@ -1,6 +1,6 @@
 #This module represents a vehicle and its different properties
-from Microscopic.Environment import *
-from Microscopic.Driver import *
+from Environment import *
+from Driver import *
 import math
 class Vehicle:
 
