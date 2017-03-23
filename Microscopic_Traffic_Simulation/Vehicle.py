@@ -19,10 +19,10 @@ class Vehicle:
 
 
 
-        if(direction=="northRight" or direction=="southRight"):
+        if(direction=="northRight" or direction=="southLeft"):
             self.position=[fixed,self.instantaneousPosition]
 
-        if(direction=="eastRight" or direction=="westRight"):
+        if(direction=="eastDown" or direction=="westUp"):
             self.position=[self.instantaneousPosition,fixed]
 
         self.visibilityRectangle = 10
@@ -67,8 +67,9 @@ class Vehicle:
 
     def pressAcceleration(self):
         if self.direction == 'southLeft':
-            self.instantaneousAcceleration=self.accelerationConstant*self.driver.getInstantaneousPressure()
+            self.instantaneousAcceleration=self.driver.accelerationCoefficient*self.driver.getInstantaneousPressure()
             temp = self.instantaneousVelocity * 1 + self.instantaneousAcceleration * 0.5 * 1 * 1  # ut+0.5at^2
+            print("hello"+str(self.position))
             self.position[1] = self.position[1] + temp
             self.instantaneousVelocity = self.instantaneousAcceleration * 1
 
