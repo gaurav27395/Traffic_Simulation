@@ -9,6 +9,9 @@
 #Acceleration Coefficient
 #Gap Limit
 #Speed Limit
+import random
+
+
 class Driver:
     def __init__(self,type="aggressive"):
         self.accelerationCoefficient=0
@@ -34,3 +37,12 @@ class Driver:
             self.gapLimit=10
             self.speedLimit=0
 
+    def getInstantaneousPressure(self):
+        if (self.type == "aggressive"):
+            return random.randint(8, 10)
+
+        if (self.type == "semi aggressive"):
+            return random.randint(5, 7)
+
+        if (self.type == "non aggressive"):
+            return random.randint(2, 4)
