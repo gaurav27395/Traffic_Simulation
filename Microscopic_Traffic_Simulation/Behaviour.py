@@ -1,5 +1,5 @@
 import math
-from Microscopic.TrafficLight import *
+from TrafficLight import *
 
 
 def generateAllScore(vehicle):
