@@ -16,33 +16,26 @@ westDownCorner=(-400,-10)
 origin=(0,0)
 
 northRightTrafficLight=(5,10)
-northLeftTrafficLight=(-5,10)
 southLeftTrafficLight=(-5,-10)
-southRightTrafficLight=(5,-10)
-eastUpTrafficLight=(10,5)
 eastDownTrafficLight=(10,-5)
 westUpTrafficLight=(-10,5)
-westDownTrafficLight=(-10,-5)
 
 
-trafficMap={"northRight":(5,10),
-"northLeft":(-5,10),
+trafficMap={
+"northRight":(5,10),
 "southLeft":(-5,-10),
-"southRight":(5,-10),
-"eastUp":(10,5),
 "eastDown":(10,-5),
-"westUp":(-10,5),
-"westDown":(-10,-5)
+"westUp":(-10,5)
 }
 
-#Tells the position of each vehicle
-vehiclePosition={}
+#Stores the statistics of each vehicle
+vehicleStatusMap={}
 
 #Add or update vehicles.
-def addOrUpdateVehicle(id,position):
-    vehiclePosition[id]=position
+def addVehicleToEnvironment(id,position):
+    vehicleStatusMap[id]=position
 
 #Return the vehicle position.
-def getVehiclePositions():
-    return vehiclePosition
+def getEnvironmentInformation():
+    return vehicleStatusMap
 

@@ -1,43 +1,41 @@
 #Controls the operation of a vehicle
 
-from Driver import *
-from Environment import *
-from Behaviour import *
-from Vehicle import *
+from Microscopic.Driver import *
+from Microscopic.Environment import *
+from Microscopic.Behaviour import *
+from Microscopic.Vehicle import *
 from threading import Timer
 
-vehicle=Vehicle("1234",3,"aggressive","bike","southLeft")
-vehicle1=Vehicle("1234",14,"aggressive","car","northRight")
-vehicle2=Vehicle("1234",3,"aggressive","truck","eastDown")
-vehicle3=Vehicle("1234",8,"aggressive","bike","westUp")
+totalVehicleCount=0
 
+def createVehicle():
+    global totalVehicleCount
+    totalVehicleCount+=1
+    id=totalVehicleCount+1
+    type=["bike","car","truck"][random.randint(0,2)]
+    direction=["northRight","southLeft","eastDown","westUp"][random.randint(0,3)]
+    fixed=0
+    if direction=="northRight" or direction=="westUp":
+        if type=="bike":
+            fixed=random.randint(0,10)
+        elif type=="car":
+            fixed=random.randint(1,9)
+        elif type=="truck":
+            fixed=random.randint(2,8)
 
-def a():
-    vehicle.pressAcceleration()
-    Timer(1,a).start()
-    print("first: "+str(vehicle.position))
-    print("Generate All Score 1 : " + generateAllScore(vehicle)+" \n")
+    if direction=="southLeft" or direction=="eastDown":
+        if type=="bike":
+            fixed=random.randint(-11,-1)
+        elif type=="car":
+            fixed=random.randint(-10,0)
+        elif type=="truck":
+            fixed=random.randint(-9,1)
 
-def b():
-    vehicle1.pressAcceleration()
-    Timer(1,b).start()
-    print("second: "+str(vehicle1.position))
-    print("Generate All Score 2 : " + generateAllScore(vehicle1)+" \n")
+    typeOfDriver=["aggressive","non aggressive","semi aggressive"][random.randint(0,2)]
+    newVehicle=Vehicle(id,fixed,typeOfDriver,type,direction)
+    addVehicleToEnvironment(id,newVehicle)
+    return newVehicle
 
-def c():
-    vehicle2.pressAcceleration()
-    Timer(1,c).start()
-    print("third: "+str(vehicle2.position))
-    print("Generate All Score 3 : " + generateAllScore(vehicle2)+" \n")
+vehicle=createVehicle()
 
-def d():
-    vehicle3.pressAcceleration()
-    Timer(1,d).start()
-    print("fourth: "+str(vehicle3.position))
-    print("Generate All Score 4 : " + generateAllScore(vehicle3)+" \n")
-
-Timer(1,a).start()
-Timer(2,b).start()
-Timer(1,c).start()
-Timer(2,d).start()
-
+vehicle.start()

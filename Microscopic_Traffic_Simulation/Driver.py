@@ -10,7 +10,7 @@
 #Gap Limit
 #Speed Limit
 import random
-
+import math
 
 class Driver:
     def __init__(self,type="aggressive"):
@@ -37,12 +37,20 @@ class Driver:
             self.gapLimit=10
             self.speedLimit=0
 
-    def getInstantaneousPressure(self):
-        if (self.type == "aggressive"):
+    def getInstantaneousPressure(self,vehicle):
+        if vehicle.instantaneousVelocity==0:
+            return 0
+
+        elif self.type == "aggressive":
             return random.randint(8, 10)
 
-        if (self.type == "semi aggressive"):
+        elif self.type == "semi aggressive":
             return random.randint(5, 7)
 
-        if (self.type == "non aggressive"):
+        elif self.type == "non aggressive":
             return random.randint(2, 4)
+
+    def getBrakingPressure(self,vehicle,brakingDistance):
+        print(vehicle)
+        requiredPressure=math.pow(vehicle.instantaneousVelocity,2)/(2*brakingDistance*self.accelerationCoefficient)+random.randint(0,5)
+        return requiredPressure
