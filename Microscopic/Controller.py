@@ -1,0 +1,42 @@
+#Controls the operation of a vehicle
+
+from Microscopic.Driver import *
+from Microscopic.Environment import *
+from Microscopic.Behaviour import *
+from Microscopic.Vehicle import *
+from threading import Timer
+
+totalVehicleCount=0
+
+
+def createVehicle():
+    global totalVehicleCount
+    totalVehicleCount+=1
+    id=totalVehicleCount+1
+    type=["bike","car","truck"][random.randint(0,2)]
+    direction=["northRight","southLeft","eastDown","westUp"][random.randint(0,3)]
+    fixed=0
+    if direction=="northRight" or direction=="westUp":
+        if type=="bike":
+            fixed=random.randint(5,5)
+        elif type=="car":
+            fixed=random.randint(5,5)
+        elif type=="truck":
+            fixed=random.randint(5,5)
+
+    if direction=="southLeft" or direction=="eastDown":
+        if type=="bike":
+            fixed=random.randint(-5,-5)
+        elif type=="car":
+            fixed=random.randint(-5,-5)
+        elif type=="truck":
+            fixed=random.randint(-5,-5)
+
+    typeOfDriver=["aggressive","non aggressive","semi aggressive"][random.randint(0,2)]
+    newVehicle=Vehicle(id,fixed,typeOfDriver,type,direction)
+    addVehicleToEnvironment(id,newVehicle)
+    return newVehicle
+
+vehicle=createVehicle()
+vehicle.start()
+vehicle.printVehicleInformation()
