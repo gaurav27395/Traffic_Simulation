@@ -1,4 +1,3 @@
-
 from Microscopic.Environment import *
 
 def generateAllScore(vehicle):
@@ -19,8 +18,9 @@ def generateAllScore(vehicle):
         return "Traffic Light executed"
 
     if maxscore == changedirectionscore:
-        generateChangeDirectionExecute(vehicle)
-        return "Chenge Direction executed"
+        changeDirectionExecute(vehicle)
+        print("Going inside Change Direction")
+        return "Change Direction executed"
 
     if maxscore == emergencybrakingscore:
         emergencyBrakingExecute(vehicle)
@@ -58,11 +58,15 @@ def generateTrafficLightScore(vehicle):
 def generateChangeDirectionScore(vehicle):
     distance = vehicle.getDistanceToTrafficLight()
     score=0
-    if distance == 0 and (vehicle.turnLeft or vehicle.turnRight):
-        score= 9
+
+    if distance <= 1 and vehicle.direction==getAllowedDirection():
+        score= 11
     else:
         score= 0
+    print("Traffic score was calculated: "+str(distance)+" "+str(score))
     return score
+
+
 
 
 # Emergency Braking Score:
@@ -89,27 +93,15 @@ def trafficLightExecute(vehicle):
         vehicle.waitForGreenSignal()
 
 
-def generateChangeDirectionExecute(vehicle):
-    lane = vehicle.currentLane()
-    direction = vehicle.getDirection()
-
-    if lane == 'south' and direction == 'left':
-        vehicle.position[0], vehicle.position[1] = vehicle.position[1], vehicle.position[0]
-    elif lane == 'south' and direction == 'right':
-        vehicle.position[0], vehicle.position[1] = vehicle.position[1], vehicle.position[0]
-    elif lane == 'north' and direction == 'right':
-        vehicle.position[0], vehicle.position[1] = vehicle.position[1], vehicle.position[0]
-    elif lane == 'north' and direction == 'left':
-        vehicle.position[0], vehicle.position[1] = vehicle.position[1], vehicle.position[0]
-    elif lane == 'east' and direction == 'left':
-        vehicle.position[0], vehicle.position[1] = vehicle.position[1], vehicle.position[0]
-    elif lane == 'east' and direction == 'right':
-        vehicle.position[0], vehicle.position[1] = vehicle.position[1], vehicle.position[0]
-    elif lane == 'west' and direction == 'right':
-        vehicle.position[0], vehicle.position[1] = vehicle.position[1], vehicle.position[0]
-    elif lane == 'west' and direction == 'left':
-        vehicle.position[0], vehicle.position[1] = vehicle.position[1], vehicle.position[0]
-
 
 def emergencyBrakingExecute(vehicle):
     vehicle.applyBrake()
+
+def changeDirectionExecute(vehicle):
+        if vehicle.turnLeft:
+            vehicle.position[0], vehicle.position[1] = vehicle.position[1], vehicle.position[0]
+        
+        elif vehicle.turnRight:
+            vehicle.position[0], vehicle.position[1] = -vehicle.position[1], -vehicle.position[0]
+
+
