@@ -1,4 +1,4 @@
-from Microscopic.Environment import *
+from Environment import *
 
 def generateAllScore(vehicle):
     carfollowingscore = generateCarFollowingScore(vehicle)
@@ -98,19 +98,9 @@ def emergencyBrakingExecute(vehicle):
     vehicle.applyBrake()
 
 def changeDirectionExecute(vehicle):
-<<<<<<< HEAD
      if vehicle.turnLeft:
             vehicle.position[0], vehicle.position[1] = vehicle.position[1], vehicle.position[0]
 
      elif vehicle.turnRight:
             vehicle.position[0], vehicle.position[1] = -vehicle.position[1], -vehicle.position[0]
 
-=======
-        if vehicle.turnLeft:
-            vehicle.position[0], vehicle.position[1] = vehicle.position[1], vehicle.position[0]
-        
-        elif vehicle.turnRight:
-            vehicle.position[0], vehicle.position[1] = -vehicle.position[1], -vehicle.position[0]
-
-
->>>>>>> 1b7d239b6e1425702e6acc720d9927d8483866e0

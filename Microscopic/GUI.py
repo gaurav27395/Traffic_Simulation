@@ -2,7 +2,7 @@ import Tkinter as tk
 import time
 import random
 from threading import Timer
-from Environment.py import *
+from Environment import *
 
 root=tk.Tk()
 root.title("Traffic Simulation")
@@ -23,15 +23,17 @@ canvas.create_rectangle(0, 300, 550, 460, fill='grey') #West
 canvas.create_rectangle(550, 460, 750, 800, fill='grey') #South
 canvas.create_rectangle(750, 300, 1300, 460, fill='grey') #East
 
-car1 = canvas.create_rectangle(20, 300, 40, 320, outline='blue', fill='blue')
-car2 = canvas.create_rectangle(580,20,610,40, outline='blue', fill='blue')
+for id in vehicleStatusMap:
+    vehicle= vehicleStatusMap[id]
+    car1 = canvas.create_rectangle(vehicle.position[0], vehicle.position[1],vehicle.position[0]+3, vehicle.position[1]+5, outline='blue', fill='blue')
+    #car2 = canvas.create_rectangle(580,20,610,40, outline='blue', fill='blue')
 
 # move car
 for x in range(500):
     y= x = 5
     time.sleep(0.025)
     canvas.move(car1, x, 0)
-    canvas.move(car2, 0, y)
+    #canvas.move(car2, 0, y)
     canvas.update()
 
 root.mainloop()
