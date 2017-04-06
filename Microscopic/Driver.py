@@ -48,6 +48,5 @@ class Driver:
             return random.randint(2, 4)
 
     def getBrakingPressure(self,vehicle,brakingDistance):
-        print("Braking pressure")
         return 1000000
 

@@ -16,6 +16,9 @@ def createVehicle():
     type=["bike","car","truck"][random.randint(0,2)]
     direction=["northRight","southLeft","eastDown","westUp"][random.randint(0,3)]
     fixed=0
+
+    
+
     if direction=="northRight" or direction=="westUp":
         if type=="bike":
             fixed=random.randint(5,5)
@@ -34,9 +37,26 @@ def createVehicle():
 
     typeOfDriver=["aggressive","non aggressive","semi aggressive"][random.randint(0,2)]
     newVehicle=Vehicle(id,fixed,typeOfDriver,type,direction)
+    number = random.random()
+
+    if number < 0.33:
+        newVehicle.turnLeft = True
+        newVehicle.turnRight = False
+
+    elif number < 0.66:
+        newVehicle.turnLeft = False
+        newVehicle.turnRight = True
+
+    else:
+        newVehicle.turnRight = False
+        newVehicle.turnLeft = False
+
     addVehicleToEnvironment(id,newVehicle)
     return newVehicle
 
 vehicle=createVehicle()
 vehicle.start()
 vehicle.printVehicleInformation()
+vehicle1=createVehicle()
+vehicle1.start()
+vehicle1.printVehicleInformation()

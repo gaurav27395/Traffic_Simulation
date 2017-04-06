@@ -5,7 +5,7 @@ from Microscopic.Behaviour import *
 from Microscopic.TrafficLight import *
 import math
 
-timeUnit = 0.1
+timeUnit = 0.3
 
 
 class Vehicle:
@@ -22,8 +22,6 @@ class Vehicle:
         self.instantaneousPosition = 0
         self.position = 0
         self.vehicleTypeMap = {"bike": 1, "car": 2, "truck": 3}
-        self.turnLeft = [True, False][random.randint(0, 1)]
-        self.turnRight = [True, False][random.randint(0, 1)]
         self.hasToStop=False
 
         if direction == "northRight" or direction == "eastDown":
@@ -39,7 +37,7 @@ class Vehicle:
             self.position = [self.instantaneousPosition, fixed]
 
         self.visibilityRectangle = 10
-        self.speedOfNearestVehicle = 0
+
 
     def selfSense(self):
         return {"id": self.id, "type": self.type, "driver": self.driver.type, "appliedPressure": self.appliedPressure,
@@ -50,13 +48,14 @@ class Vehicle:
     def getVisibilityRectangle(self):
         positionMap = getEnvironmentInformation()
 
-    def speedToNearestVehicle(self):
-        return self.speedOfNearestVehicle
+    def speedOfNearestVehicle(self):
+        return self.getInformationOfNearestVehicle()[2]
 
     # Take vehicles from the vehicle's visibility rectangle only
 
-    def getDistancetoNearestVehicle(self):
+    def getInformationOfNearestVehicle(self):
         carDictionary = {}
+        speedOfNearestVehicle=0
         leftCoordinate = [(self.position[0] - self.vehicleTypeMap[self.type] / 2),
                           (self.position[1] + self.vehicleTypeMap[self.type] / 2)]
         rightCoordinate = [(self.position[0] + self.vehicleTypeMap[self.type] / 2),
@@ -77,7 +76,7 @@ class Vehicle:
                     nearestVehicle[0] = value.position[0]
                     nearestVehicle[1] = value.position[1]
                     speedOfNearestVehicle = value.instantaneousVelocity
-        return nearestVehicle, distance
+        return [nearestVehicle, distance,speedOfNearestVehicle]
 
     def getDistanceToTrafficLight(self):
         lanePosition = trafficMap[self.direction]
@@ -127,7 +126,7 @@ class Vehicle:
 
 
     def printVehicleInformation(self):
-        print("Direction: "+self.direction+" Type: "+self.type+" |Position: "+str(self.position)+" |Velocity: "+str(self.instantaneousVelocity)+" |Acceleration: "+str(self.instantaneousAcceleration))
+        print("Id: "+str(self.id)+" Direction: "+self.direction+" Type: "+self.type+" |Position: "+str(self.position)+" |Velocity: "+str(self.instantaneousVelocity)+" |Acceleration: "+str(self.instantaneousAcceleration))
         print("\n")
         Timer(1,self.printVehicleInformation).start()
 
