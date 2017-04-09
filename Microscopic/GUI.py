@@ -1,4 +1,4 @@
-import Tkinter as tk
+import tkinter as tk
 import time
 import random
 from threading import Timer
@@ -31,18 +31,11 @@ for id in vehicleStatusMap:
     xposition = vehicle.position[0] * 3.25 +400
     yposition = vehicle.position[0] * 1.95 +400
     car1 = canvas.create_rectangle(xposition, yposition,xposition+10, yposition+5, outline='blue', fill='blue')
-    for x in range(500):
-        y= x = 2
-        canvas.move(car1, x, 0)
-        canvas.update()
-    #car2 = canvas.create_rectangle(580,20,610,40, outline='blue', fill='blue')
 
-# move car
-# for x in range(500):
-#     y= x = 1
-#     time.sleep(0.025)
-#     canvas.move(car1, x, 0)
-#     #canvas.move(car2, 0, y)
-#     canvas.update()
+for x in range (800):
+    x=5
+    time.sleep(0.025)
+    canvas.move(car1, x, 0)
+    canvas.update()
 
 root.mainloop()
