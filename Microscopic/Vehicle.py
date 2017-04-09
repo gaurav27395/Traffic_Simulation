@@ -1,8 +1,8 @@
 # This module represents a vehicle and its different properties
-from Environment import *
-from Driver import *
-from Behaviour import *
-from TrafficLight import *
+from Microscopic.Environment import *
+from Microscopic.Driver import *
+from Microscopic.Behaviour import *
+from Microscopic.TrafficLight import *
 import math
 
 timeUnit = 0.3
@@ -25,10 +25,10 @@ class Vehicle:
         self.hasToStop=False
 
         if direction == "northRight" or direction == "eastDown":
-            self.instantaneousPosition = random.randint(22, 23)
+            self.instantaneousPosition = random.randint(350,400)
 
         elif direction == "southLeft" or direction == "westUp":
-            self.instantaneousPosition = random.randint(-23, -21)
+            self.instantaneousPosition = random.randint(-400,-350)
 
         if direction == "northRight" or direction == "southLeft":
             self.position = [fixed, self.instantaneousPosition]
@@ -54,7 +54,6 @@ class Vehicle:
     # Take vehicles from the vehicle's visibility rectangle only
 
     def getInformationOfNearestVehicle(self):
-        carDictionary = {}
         speedOfNearestVehicle=0
         leftCoordinate = [(self.position[0] - self.vehicleTypeMap[self.type] / 2),
                           (self.position[1] + self.vehicleTypeMap[self.type] / 2)]

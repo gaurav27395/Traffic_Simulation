@@ -28,19 +28,19 @@ def createVehicle(vehicleDirection,vehicleType):
     fixed=0
     if direction=="northRight" or direction=="westUp":
         if type=="bike":
-            fixed=random.randint(5,5)
+            fixed=random.randint(0,9)
         elif type=="car":
-            fixed=random.randint(5,5)
+            fixed=random.randint(0,8)
         elif type=="truck":
-            fixed=random.randint(5,5)
+            fixed=random.randint(0,6)
 
     if direction=="southLeft" or direction=="eastDown":
         if type=="bike":
-            fixed=random.randint(-5,-5)
+            fixed=random.randint(-9,0)
         elif type=="car":
-            fixed=random.randint(-5,-5)
+            fixed=random.randint(-8,0)
         elif type=="truck":
-            fixed=random.randint(-5,-5)
+            fixed=random.randint(-6,0)
 
     typeOfDriver=["aggressive","non aggressive","semi aggressive"][random.randint(0,2)]
     newVehicle=Vehicle(id,fixed,typeOfDriver,type,direction)
