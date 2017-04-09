@@ -82,7 +82,7 @@ directionMenu.pack()
 
 typeVariable=tkinter.StringVar(window)
 typeVariable.set("Random")
-typeMenu=tkinter.OptionMenu(window,typeVariable,"Random","Car","Bus","Bike")
+typeMenu=tkinter.OptionMenu(window,typeVariable,"Random","car","bus","bike")
 typeMenu.pack()
 
 button=tkinter.Button(window,text="ADD VEHICLE",command=lambda: introduceNewVehicle(directionVariable.get(),typeVariable.get()))
