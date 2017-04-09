@@ -1,1 +1,1 @@
-eastDown
+northRight

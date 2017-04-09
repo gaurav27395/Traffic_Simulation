@@ -26,11 +26,21 @@ canvas.create_rectangle(750, 300, 1300, 460, fill='grey') #East
 
 print(vehicleStatusMap)
 
+def addVehicleToGui(vehicle):
+    vehicle=canvas.create_rectangle(xposition,yposition,)
+    if vehicle.type == 'car':
+        canvas.create_rectangle(xposition, yposition,xposition+10, yposition+5, outline='blue', fill='blue')
+    elif vehicle.type == 'bus':
+        canvas.create_rectangle(xposition, yposition,xposition+20, yposition+10, outline='blue', fill='blue')
+    elif vehicle.type == 'bike':
+        canvas.create_rectangle(xposition, yposition,xposition+8, yposition+3, outline='blue', fill='blue')
+
+car1 = None
 for id in vehicleStatusMap:
     vehicle = vehicleStatusMap[id]
     xposition = vehicle.position[0] * 3.25 +400
     yposition = vehicle.position[0] * 1.95 +400
-    car1 = canvas.create_rectangle(xposition, yposition,xposition+10, yposition+5, outline='blue', fill='blue')
+    car1 = addVehicleToGUI(vehicle.type)
 
 for x in range (800):
     x=5
@@ -39,3 +49,4 @@ for x in range (800):
     canvas.update()
 
 root.mainloop()
+
