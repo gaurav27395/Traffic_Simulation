@@ -5,27 +5,11 @@
 #Updation or addition  of position of a vehicle is also don in this module.
 #Origin has been defined at the geometric centre of the system.
 
-northRightCorner=(10,400)
-northLeftCorner=(-10,400)
-southLeftCorner=(10,-400)
-southRightCorner=(-10,-400)
-eastUpCorner=(400,10)
-eastDownCorner=(400,-10)
-westUpCorner=(-400,10)
-westDownCorner=(-400,-10)
-origin=(0,0)
-
-northRightTrafficLight=(5,10)
-southLeftTrafficLight=(-5,-10)
-eastDownTrafficLight=(10,-5)
-westUpTrafficLight=(-10,5)
-
-
 trafficMap={
-"northRight":(5,10),
-"southLeft":(-5,-10),
-"eastDown":(10,-5),
-"westUp":(-10,5)
+"northRight":(700,300),
+"southLeft":(600,460),
+"eastDown":(750,420),
+"westUp":(550,340)
 }
 
 #Stores the statistics of each vehicle
