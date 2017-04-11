@@ -1,9 +1,9 @@
 #Controls the operation of a vehicle
 
-from Driver import *
-from Environment import *
-from Behaviour import *
-from Vehicle import *
+from Microscopic.Driver import *
+from Microscopic.Environment import *
+from Microscopic.Behaviour import *
+from Microscopic.Vehicle import *
 from threading import Timer
 import tkinter
 
@@ -26,21 +26,38 @@ def createVehicle(vehicleDirection,vehicleType):
         type=vehicleType
 
     fixed=0
-    if direction=="northRight" or direction=="westUp":
+    if direction=="northRight":
         if type=="bike":
-            fixed=random.randint(0,9)
+            fixed=random.randint(660,740)
         elif type=="car":
-            fixed=random.randint(0,8)
+            fixed=random.randint(670,730)
         elif type=="truck":
-            fixed=random.randint(0,6)
+            fixed=random.randint(680,720)
 
-    if direction=="southLeft" or direction=="eastDown":
+    if  direction=="westUp":
         if type=="bike":
-            fixed=random.randint(-9,0)
+            fixed=random.randint(310,370)
         elif type=="car":
-            fixed=random.randint(-8,0)
+            fixed=random.randint(320,360)
         elif type=="truck":
-            fixed=random.randint(-6,0)
+            fixed=random.randint(330,350)
+
+    if direction=="southLeft":
+        if type=="bike":
+            fixed=random.randint(560,640)
+        elif type=="car":
+            fixed=random.randint(570,630)
+        elif type=="truck":
+            fixed=random.randint(580,620)
+
+
+    if direction=="eastDown":
+        if type=="bike":
+            fixed=random.randint(390,450)
+        elif type=="car":
+            fixed=random.randint(400,440)
+        elif type=="truck":
+            fixed=random.randint(410,430)
 
     typeOfDriver=["aggressive","non aggressive","semi aggressive"][random.randint(0,2)]
     newVehicle=Vehicle(id,fixed,typeOfDriver,type,direction)
@@ -65,12 +82,14 @@ def createVehicle(vehicleDirection,vehicleType):
 def introduceNewVehicle(direction=None,type=None):
     vehicle=createVehicle(direction,type)
     vehicle.start()
-    vehicle.printVehicleInformation()
+    #vehicle.printVehicleInformation()
     addVehicleToGUI(vehicle)
 
 def addVehicleToGUI(vehicle):
-    xposition = vehicle.position[0] * 1.625 + 400
-    yposition = vehicle.position[0] * 0.975 + 400
+    xposition = vehicle.position[0]
+    yposition = vehicle.position[1]
+
+    print(vehicle.direction+" "+str(xposition)+" "+str(yposition))
 
     if vehicle.type == 'car':
         canvas.create_rectangle(xposition, yposition,xposition+10, yposition+5, outline='blue', fill='blue')
@@ -97,10 +116,6 @@ canvas.create_rectangle(550, 0, 750, 300, fill='grey') #North
 canvas.create_rectangle(0, 300, 550, 460, fill='grey') #West
 canvas.create_rectangle(550, 460, 750, 800, fill='grey') #South
 canvas.create_rectangle(750, 300, 1300, 460, fill='grey') #East
-canvas.create_line(650, 0, 650, 300, fill="white", dash=(30, 20), width= 7)
-canvas.create_line(650, 460, 650, 780, fill="white", dash=(30, 20), width= 7)
-canvas.create_line(0, 375, 550, 375, fill="white", dash=(30, 20), width= 7)
-canvas.create_line(770, 375, 1300, 375, fill="white", dash=(30, 20), width= 7)
 
 simulationLabel=tkinter.Label(canvas,text="Traffic Simulation",font=("Helvetica", 20))
 simulationLabel.place(x=20,y=20)
