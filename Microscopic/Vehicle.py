@@ -1,8 +1,8 @@
 # This module represents a vehicle and its different properties
-from Environment import *
-from Driver import *
-from Behaviour import *
-from TrafficLight import *
+from Microscopic.Environment import *
+from Microscopic.Driver import *
+from Microscopic.Behaviour import *
+from Microscopic.TrafficLight import *
 import math
 
 timeUnit = 0.3
@@ -21,14 +21,21 @@ class Vehicle:
         self.instantaneousVelocity = random.randint(5, 10)
         self.instantaneousPosition = 0
         self.position = 0
-        self.vehicleTypeMap = {"bike": 1, "car": 2, "truck": 3}
+        self.vehicleTypeMap = {"bike": 1, "car": 2, "bus": 3}
         self.hasToStop=False
 
-        if direction == "northRight" or direction == "eastDown":
-            self.instantaneousPosition = random.randint(350,400)
+        if direction == "northRight":
+            self.instantaneousPosition = random.randint(0, 50)
 
-        elif direction == "southLeft" or direction == "westUp":
-            self.instantaneousPosition = random.randint(-400,-350)
+        elif direction == "eastDown":
+            self.instantaneousPosition = random.randint(1250, 1300)
+
+        elif direction == "southLeft":
+            self.instantaneousPosition = random.randint(650, 720)
+
+        elif direction == "westUp":
+            self.instantaneousPosition = random.randint(0, 50)
+
 
         if direction == "northRight" or direction == "southLeft":
             self.position = [fixed, self.instantaneousPosition]
