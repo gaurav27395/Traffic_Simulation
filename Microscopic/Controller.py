@@ -21,7 +21,7 @@ def createVehicle(vehicleDirection,vehicleType):
         direction=vehicleDirection
 
     if vehicleType=="Random":
-        type = ["bike", "car", "truck"][random.randint(0, 2)]
+        type = ["bike", "car", "bus"][random.randint(0, 2)]
     else:
         type=vehicleType
 
@@ -31,7 +31,7 @@ def createVehicle(vehicleDirection,vehicleType):
             fixed=random.randint(660,740)
         elif type=="car":
             fixed=random.randint(670,730)
-        elif type=="truck":
+        elif type=="bus":
             fixed=random.randint(680,720)
 
     if  direction=="westUp":
@@ -39,7 +39,7 @@ def createVehicle(vehicleDirection,vehicleType):
             fixed=random.randint(310,370)
         elif type=="car":
             fixed=random.randint(320,360)
-        elif type=="truck":
+        elif type=="bus":
             fixed=random.randint(330,350)
 
     if direction=="southLeft":
@@ -47,7 +47,7 @@ def createVehicle(vehicleDirection,vehicleType):
             fixed=random.randint(560,640)
         elif type=="car":
             fixed=random.randint(570,630)
-        elif type=="truck":
+        elif type=="bus":
             fixed=random.randint(580,620)
 
 
@@ -56,7 +56,7 @@ def createVehicle(vehicleDirection,vehicleType):
             fixed=random.randint(390,450)
         elif type=="car":
             fixed=random.randint(400,440)
-        elif type=="truck":
+        elif type=="bus":
             fixed=random.randint(410,430)
 
     typeOfDriver=["aggressive","non aggressive","semi aggressive"][random.randint(0,2)]
@@ -134,13 +134,3 @@ button=tkinter.Button(window,text="ADD VEHICLE",bg="white",command=lambda: intro
 button.place(x=250,y=60)
 
 window.mainloop()
-
-
-def moveVehicleInGUI(vehicle)
-    canvas.move(vehicle,dx,dy)
-
-for x in range (800):
-    x=5
-    time.sleep(0.025)
-    canvas.move(car1, x, 0)
-    canvas.update()
