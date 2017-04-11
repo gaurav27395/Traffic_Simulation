@@ -1,21 +1,21 @@
 #Controls the operation of a vehicle
 
-from Driver import *
-from Environment import *
-from Behaviour import *
-from Vehicle import *
+from Microscopic.Driver import *
+from Microscopic.Environment import *
+from Microscopic.Behaviour import *
+from Microscopic.Vehicle import *
 from threading import Timer
-import random
 import tkinter
+import time
 
 totalVehicleCount=0
-trafficStatusMap = {"northRight":0,"southLeft":0,"eastDown":0,"westUp":0}
+
 
 def createVehicle(vehicleDirection,vehicleType):
     global totalVehicleCount
-    global trafficStatusMap
     totalVehicleCount+=1
     id=totalVehicleCount+1
+
     if vehicleDirection=="Random":
         direction=["northRight","southLeft","eastDown","westUp"][random.randint(0,3)]
     else:
@@ -28,7 +28,6 @@ def createVehicle(vehicleDirection,vehicleType):
 
     fixed=0
     if direction=="northRight":
-        trafficStatusMap["northRight"]+=1
         if type=="bike":
             fixed=random.randint(660,740)
         elif type=="car":
@@ -37,7 +36,6 @@ def createVehicle(vehicleDirection,vehicleType):
             fixed=random.randint(680,720)
 
     if  direction=="westUp":
-        trafficStatusMap["westUp"]+=1
         if type=="bike":
             fixed=random.randint(310,370)
         elif type=="car":
@@ -46,7 +44,6 @@ def createVehicle(vehicleDirection,vehicleType):
             fixed=random.randint(330,350)
 
     if direction=="southLeft":
-        trafficStatusMap["southLeft"]+=1
         if type=="bike":
             fixed=random.randint(560,640)
         elif type=="car":
@@ -56,7 +53,6 @@ def createVehicle(vehicleDirection,vehicleType):
 
 
     if direction=="eastDown":
-        trafficStatusMap["eastDown"]+=1
         if type=="bike":
             fixed=random.randint(390,450)
         elif type=="car":
@@ -82,29 +78,49 @@ def createVehicle(vehicleDirection,vehicleType):
 
     addVehicleToEnvironment(id,newVehicle)
     print("A new vehicle was created ")
-    print(trafficStatusMap)
     return newVehicle
 
 def introduceNewVehicle(direction=None,type=None):
     vehicle=createVehicle(direction,type)
     vehicle.start()
-    #vehicle.printVehicleInformation()
+    vehicle.printVehicleInformation()
     addVehicleToGUI(vehicle)
 
 def addVehicleToGUI(vehicle):
     xposition = vehicle.position[0]
     yposition = vehicle.position[1]
-
-    print(vehicle.direction+" "+str(xposition)+" "+str(yposition))
+    temp=vehicle.position
+    lastPositionDictionary[vehicle.id] = temp
 
     if vehicle.type == 'car':
-        canvas.create_rectangle(xposition, yposition,xposition+10, yposition+5, outline='blue', fill='blue')
+        vehicle.guiRectangle=canvas.create_rectangle(xposition, yposition,xposition+10, yposition+5, outline='blue', fill='blue')
+
     elif vehicle.type == 'bus':
-        canvas.create_rectangle(xposition, yposition,xposition+20, yposition+10, outline='blue', fill='blue')
+        vehicle.guiRectangle=canvas.create_rectangle(xposition, yposition,xposition+20, yposition+10, outline='blue', fill='blue')
+
     elif vehicle.type == 'bike':
-        canvas.create_rectangle(xposition, yposition,xposition+8, yposition+3, outline='blue', fill='blue')
+        vehicle.guiRectangle =canvas.create_rectangle(xposition, yposition,xposition+8, yposition+3, outline='blue', fill='blue')
+
+    moveVehicle(vehicle)
+
+def moveVehicle(vehicle):
+    Timer(3,moveVehicleHelper,(vehicle,)).start()
+
+def moveVehicleHelper(vehicle):
+    print(vehicle)
+    newPosition=vehicle.position
+    lastPosition=lastPositionDictionary[vehicle.id]
+    print("Check: " + str(lastPositionDictionary))
+    lastPositionDictionary[vehicle.id]=newPosition
+    print(str(newPosition[1])+" "+str(lastPosition[1]))
 
 
+    if vehicle.direction=="northRight" or vehicle.direction=="southLeft":
+        canvas.move(vehicle.guiRectangle,  0,newPosition[1] - canvas.coords(vehicle.guiRectangle)[1])
+    else:
+        canvas.move(vehicle.guiRectangle, canvas.coords(vehicle.guiRectangle)[1], 0)
+
+    Timer(3,moveVehicleHelper,(vehicle,)).start()
 
 #The following line of code are used for creating the input GUI
 window=tkinter.Tk()
