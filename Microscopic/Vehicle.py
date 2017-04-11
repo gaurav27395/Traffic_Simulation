@@ -1,8 +1,8 @@
 # This module represents a vehicle and its different properties
-from Environment import *
-from Driver import *
-from Behaviour import *
-from TrafficLight import *
+from Microscopic.Environment import *
+from Microscopic.Driver import *
+from Microscopic.Behaviour import *
+from Microscopic.TrafficLight import *
 import math
 
 timeUnit = 0.3
@@ -23,6 +23,7 @@ class Vehicle:
         self.position = 0
         self.vehicleTypeMap = {"bike": 1, "car": 2, "bus": 3}
         self.hasToStop=False
+        self.guiRectangle=None
 
         if direction == "northRight":
             self.instantaneousPosition = random.randint(0, 50)
@@ -94,14 +95,14 @@ class Vehicle:
             self.instantaneousAcceleration = self.driver.accelerationCoefficient * self.driver.getInstantaneousPressure(
                 self)
             temp = self.instantaneousVelocity * timeUnit + self.instantaneousAcceleration * 0.5 * timeUnit*timeUnit  # ut+0.5at^2
-            self.position[1] = self.position[1] + temp
+            self.position[1] = self.position[1] - temp
             self.instantaneousVelocity = self.instantaneousAcceleration * timeUnit
 
         if self.direction == 'northRight':
             self.instantaneousAcceleration = self.driver.accelerationCoefficient * self.driver.getInstantaneousPressure(
                 self)
             temp = self.instantaneousVelocity * timeUnit + self.instantaneousAcceleration * 0.5 * timeUnit * timeUnit  # ut+0.5at^2
-            self.position[1] = self.position[1] - temp
+            self.position[1] = self.position[1] + temp
             self.instantaneousVelocity = self.instantaneousAcceleration * timeUnit
 
         if self.direction == 'eastDown':
