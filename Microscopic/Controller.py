@@ -119,3 +119,13 @@ button=tkinter.Button(window,text="ADD VEHICLE",bg="white",command=lambda: intro
 button.place(x=250,y=60)
 
 window.mainloop()
+
+
+def moveVehicleInGUI(vehicle)
+    canvas.move(vehicle,dx,dy)
+
+for x in range (800):
+    x=5
+    time.sleep(0.025)
+    canvas.move(car1, x, 0)
+    canvas.update()

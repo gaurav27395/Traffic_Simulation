@@ -45,7 +45,7 @@ for id in vehicleStatusMap:
 for x in range (800):
     x=5
     time.sleep(0.025)
-    canvas.move(car1, x, 0)
+    canvas.place(car1, x, 0)
     canvas.update()
 
 root.mainloop()
