@@ -1,20 +1,21 @@
 #Controls the operation of a vehicle
 
-from Microscopic.Driver import *
-from Microscopic.Environment import *
-from Microscopic.Behaviour import *
-from Microscopic.Vehicle import *
+from Driver import *
+from Environment import *
+from Behaviour import *
+from Vehicle import *
 from threading import Timer
+import random
 import tkinter
 
 totalVehicleCount=0
-
+trafficStatusMap = {"northRight":0,"southLeft":0,"eastDown":0,"westUp":0}
 
 def createVehicle(vehicleDirection,vehicleType):
     global totalVehicleCount
+    global trafficStatusMap
     totalVehicleCount+=1
     id=totalVehicleCount+1
-
     if vehicleDirection=="Random":
         direction=["northRight","southLeft","eastDown","westUp"][random.randint(0,3)]
     else:
@@ -27,6 +28,7 @@ def createVehicle(vehicleDirection,vehicleType):
 
     fixed=0
     if direction=="northRight":
+        trafficStatusMap["northRight"]+=1
         if type=="bike":
             fixed=random.randint(660,740)
         elif type=="car":
@@ -35,6 +37,7 @@ def createVehicle(vehicleDirection,vehicleType):
             fixed=random.randint(680,720)
 
     if  direction=="westUp":
+        trafficStatusMap["westUp"]+=1
         if type=="bike":
             fixed=random.randint(310,370)
         elif type=="car":
@@ -43,6 +46,7 @@ def createVehicle(vehicleDirection,vehicleType):
             fixed=random.randint(330,350)
 
     if direction=="southLeft":
+        trafficStatusMap["southLeft"]+=1
         if type=="bike":
             fixed=random.randint(560,640)
         elif type=="car":
@@ -52,6 +56,7 @@ def createVehicle(vehicleDirection,vehicleType):
 
 
     if direction=="eastDown":
+        trafficStatusMap["eastDown"]+=1
         if type=="bike":
             fixed=random.randint(390,450)
         elif type=="car":
@@ -77,6 +82,7 @@ def createVehicle(vehicleDirection,vehicleType):
 
     addVehicleToEnvironment(id,newVehicle)
     print("A new vehicle was created ")
+    print(trafficStatusMap)
     return newVehicle
 
 def introduceNewVehicle(direction=None,type=None):
