@@ -1,4 +1,5 @@
-from Environment import *
+from Microscopic.Environment import *
+from threading import Timer
 
 def generateAllScore(vehicle):
     carfollowingscore = generateCarFollowingScore(vehicle)
@@ -9,9 +10,9 @@ def generateAllScore(vehicle):
     scoretuple = [carfollowingscore, roadfollowingscore, trafficlightscore, changedirectionscore, emergencybrakingscore]
     maxscore = max(scoretuple)
 
-    if maxscore == carfollowingscore:
-        carFollowExecute(vehicle)
-        return "Car Following executed"
+    # if maxscore == carfollowingscore:
+    #     carFollowExecute(vehicle)
+    #     return "Car Following executed"
 
     if maxscore == trafficlightscore:
         trafficLightExecute(vehicle)
@@ -19,7 +20,6 @@ def generateAllScore(vehicle):
 
     if maxscore == changedirectionscore:
         changeDirectionExecute(vehicle)
-        print("Going inside Change Direction")
         return "Change Direction executed"
 
     if maxscore == emergencybrakingscore:
@@ -31,17 +31,9 @@ def generateAllScore(vehicle):
 def generateCarFollowingScore(vehicle):
     distance = vehicle.getInformationOfNearestVehicle()[1]
 
-    if distance >= 50:
-        return 0
-    elif distance >= 40 and distance < 50:
-        return 2.5
-    elif distance >= 30 and distance < 40:
-        return 5
-    elif distance >= 20 and distance < 30:
-        return 7.5
-    elif distance <= 20:
-        return 8
-    elif distance < 10:
+    if distance <= 300 and distance > 150:
+        return 9
+    else:
         return 0
 
 
@@ -49,7 +41,7 @@ def generateCarFollowingScore(vehicle):
 def generateTrafficLightScore(vehicle):
     trafficlight_distance = vehicle.getDistanceToTrafficLight()
 
-    if trafficlight_distance <= 10:
+    if trafficlight_distance <= 100:
         return 10
     else:
         return 0
@@ -57,16 +49,13 @@ def generateTrafficLightScore(vehicle):
 
 def generateChangeDirectionScore(vehicle):
     distance = vehicle.getDistanceToTrafficLight()
-    score=0
+    score = 0
 
-    if distance <= 1 and vehicle.direction==getAllowedDirection():
-        score= 11
+    if distance <= 50 and vehicle.direction == getAllowedDirection() and (vehicle.turnLeft or vehicle.turnRight):
+        score = 11
     else:
-        score= 0
-    print("Traffic score was calculated: "+str(distance)+" "+str(score))
+        score = 0
     return score
-
-
 
 
 # Emergency Braking Score:
@@ -80,27 +69,73 @@ def generateEmergencyBrakingScore(vehicle):
 
 
 def carFollowExecute(vehicle):
-    # distance = vehicle.getDistancetoNearestVehicle()
-    # coordinates = vehicle.getCoordinatetoNearestVehicle()
     speed = vehicle.getInformationOfNearestVehicle()[1]
     vehicle.speed = speed
 
 
 def trafficLightExecute(vehicle):
-    if vehicle.direction != getAllowedDirection():
+    if vehicle.direction != getAllowedDirection() and vehicle.getDistanceToTrafficLight()<50:
         vehicle.hasToStop = True
         vehicle.pressBrake(vehicle.getDistanceToTrafficLight())
         vehicle.waitForGreenSignal()
 
 
-
 def emergencyBrakingExecute(vehicle):
     vehicle.applyBrake()
 
+
 def changeDirectionExecute(vehicle):
-     if vehicle.turnLeft:
-            vehicle.position[0], vehicle.position[1] = vehicle.position[1], vehicle.position[0]
+    if vehicle.turnLeft:
+        if vehicle.direction == "southLeft":
+            if vehicle.position[1]<430:
+                vehicle.direction="eastDown"
+                vehicle.turnLeft=False
+                vehicle.turnRight=False
 
-     elif vehicle.turnRight:
-            vehicle.position[0], vehicle.position[1] = -vehicle.position[1], -vehicle.position[0]
+    if vehicle.turnLeft:
+        if vehicle.direction == "northRight":
+            if vehicle.position[1]>330:
+                vehicle.direction="westUp"
+                vehicle.turnLeft = False
+                vehicle.turnRight = False
 
+    if vehicle.turnLeft:
+        if vehicle.direction == "westUp":
+            if vehicle.position[0]>560:
+                vehicle.direction="southLeft"
+                vehicle.turnLeft = False
+                vehicle.turnRight = False
+    if vehicle.turnLeft:
+        if vehicle.direction == "eastDown":
+            if vehicle.position[0]<710:
+                vehicle.direction="northRight"
+                vehicle.turnLeft = False
+                vehicle.turnRight = False
+
+    if vehicle.turnRight:
+        if vehicle.direction == "southLeft":
+            if vehicle.position[1] < 430:
+                vehicle.direction = "westUp"
+                vehicle.turnLeft = False
+                vehicle.turnRight = False
+
+    if vehicle.turnRight:
+        if vehicle.direction == "northRight":
+            if vehicle.position[1] > 330:
+                vehicle.direction = "eastDown"
+                vehicle.turnLeft = False
+                vehicle.turnRight = False
+
+    if vehicle.turnRight:
+        if vehicle.direction == "westUp":
+            if vehicle.position[0] > 560:
+                vehicle.direction = "northRight"
+                vehicle.turnLeft = False
+                vehicle.turnRight = False
+
+    if vehicle.turnRight:
+        if vehicle.direction == "eastDown":
+            if vehicle.position[0] < 710:
+                vehicle.direction = "southLeft"
+                vehicle.turnLeft = False
+                vehicle.turnRight = False
