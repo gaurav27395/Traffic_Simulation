@@ -35,6 +35,11 @@ def createVehicle(vehicleDirection,vehicleType):
         elif type=="bus":
             fixed=random.randint(680,720)
 
+        if "northRight" not in countOfVehicles:
+            countOfVehicles["northRight"]=1
+        else:
+            countOfVehicles["northRight"]+=1
+
     if  direction=="westUp":
         if type=="bike":
             fixed=random.randint(310,370)
@@ -43,6 +48,11 @@ def createVehicle(vehicleDirection,vehicleType):
         elif type=="bus":
             fixed=random.randint(330,350)
 
+        if "westUp" not in countOfVehicles:
+            countOfVehicles["westUp"]=1
+        else:
+            countOfVehicles["westUp"]+=1
+
     if direction=="southLeft":
         if type=="bike":
             fixed=random.randint(560,640)
@@ -50,7 +60,11 @@ def createVehicle(vehicleDirection,vehicleType):
             fixed=random.randint(570,630)
         elif type=="bus":
             fixed=random.randint(580,620)
-
+            
+        if "southLeft" not in countOfVehicles:
+            countOfVehicles["southLeft"]=1
+        else:
+            countOfVehicles["southLeft"]+=1
 
     if direction=="eastDown":
         if type=="bike":
@@ -59,21 +73,26 @@ def createVehicle(vehicleDirection,vehicleType):
             fixed=random.randint(400,440)
         elif type=="bus":
             fixed=random.randint(410,430)
+        
+        if "eastDown" not in countOfVehicles:
+            countOfVehicles["eastDown"]=1
+        else:
+            countOfVehicles["eastDown"]+=1
 
     typeOfDriver=["aggressive","non aggressive","semi aggressive"][random.randint(0,2)]
     newVehicle=Vehicle(id,fixed,typeOfDriver,type,direction)
     number = random.random()
 
     if number < 0.33:
-        newVehicle.turnLeft = True
-        newVehicle.turnRight = False
+        newVehicle.turnLeft = False
+        newVehicle.turnRight = True
 
     elif number < 0.66:
         newVehicle.turnLeft = False
         newVehicle.turnRight = True
 
     else:
-        newVehicle.turnRight = False
+        newVehicle.turnRight = True
         newVehicle.turnLeft = False
 
     addVehicleToEnvironment(id,newVehicle)
@@ -83,7 +102,7 @@ def createVehicle(vehicleDirection,vehicleType):
 def introduceNewVehicle(direction=None,type=None):
     vehicle=createVehicle(direction,type)
     vehicle.start()
-    vehicle.printVehicleInformation()
+    #vehicle.printVehicleInformation()
     addVehicleToGUI(vehicle)
 
 def addVehicleToGUI(vehicle):
@@ -104,23 +123,20 @@ def addVehicleToGUI(vehicle):
     moveVehicle(vehicle)
 
 def moveVehicle(vehicle):
-    Timer(3,moveVehicleHelper,(vehicle,)).start()
+    Timer(0.1,moveVehicleHelper,(vehicle,)).start()
 
 def moveVehicleHelper(vehicle):
-    print(vehicle)
     newPosition=vehicle.position
     lastPosition=lastPositionDictionary[vehicle.id]
-    print("Check: " + str(lastPositionDictionary))
     lastPositionDictionary[vehicle.id]=newPosition
-    print(str(newPosition[1])+" "+str(lastPosition[1]))
 
 
     if vehicle.direction=="northRight" or vehicle.direction=="southLeft":
         canvas.move(vehicle.guiRectangle,  0,newPosition[1] - canvas.coords(vehicle.guiRectangle)[1])
     else:
-        canvas.move(vehicle.guiRectangle, canvas.coords(vehicle.guiRectangle)[1], 0)
+        canvas.move(vehicle.guiRectangle, newPosition[0]-canvas.coords(vehicle.guiRectangle)[0], 0)
 
-    Timer(3,moveVehicleHelper,(vehicle,)).start()
+    Timer(0.05,moveVehicleHelper,(vehicle,)).start()
 
 #The following line of code are used for creating the input GUI
 window=tkinter.Tk()
@@ -146,6 +162,9 @@ canvas.create_line(770, 375, 1300, 375, fill="white", dash=(30, 20), width= 7)
 simulationLabel=tkinter.Label(canvas,text="Traffic Simulation",font=("Helvetica", 20))
 simulationLabel.place(x=20,y=20)
 
+allowedDirectionLabel=tkinter.Label(canvas,text="Allowed Direction: "+getAllowedDirection(),font=("Helvetica", 20))
+allowedDirectionLabel.place(x=900,y=20)
+
 directionVariable=tkinter.StringVar(window)
 directionVariable.set("Random")
 directionMenu = tkinter.OptionMenu(window,directionVariable,"Random","northRight", "southLeft", "eastDown","westUp")
@@ -156,7 +175,48 @@ typeVariable.set("Random")
 typeMenu=tkinter.OptionMenu(window,typeVariable,"Random","car","bus","bike")
 typeMenu.place(x=120,y=60)
 
+
+def test():
+    allowedDirectionLabel = tkinter.Label(canvas, text="Allowed Direction: "+getAllowedDirection()+"      ", font=("Helvetica", 20))
+    allowedDirectionLabel.place(x=880,y=20)
+
+    statisticsLabel = tkinter.Label(canvas, text="Statistics:",font=("Helvetica", 16))
+    statisticsLabel.place(x=760, y=470)
+
+    directionLabel = tkinter.Label(canvas, text="|Direction|", font=("Helvetica", 10))
+    directionLabel.place(x=760, y=500)
+
+    numberOfVehiclesLabel = tkinter.Label(canvas, text="|Number Of Vehicles|", font=("Helvetica", 10))
+    numberOfVehiclesLabel.place(x=860, y=500)
+
+    waitingTimeLabel = tkinter.Label(canvas, text="|Average Waiting Time|", font=("Helvetica", 10))
+    waitingTimeLabel.place(x=1030, y=500)
+
+    southLeftLabel = tkinter.Label(canvas, text="southLeft", font=("Helvetica", 10))
+    northRightLabel = tkinter.Label(canvas, text="northRight", font=("Helvetica", 10))
+    eastDownLabel = tkinter.Label(canvas, text="eastDown", font=("Helvetica", 10))
+    westUpLabel = tkinter.Label(canvas, text="westUp", font=("Helvetica", 10))
+
+    southLeftLabel.place(x=760, y=540)
+    northRightLabel.place(x=760,y=580)
+    eastDownLabel.place(x=760,y=620)
+    westUpLabel.place(x=760,y=660)
+
+
+    vehiclesSouthLeftLabel = tkinter.Label(canvas, text=countOfVehicles["southLeft"], font=("Helvetica", 10))
+    vehiclesNorthRightLabel = tkinter.Label(canvas, text=countOfVehicles["northRight"], font=("Helvetica", 10))
+    vehiclesEastDownLabel = tkinter.Label(canvas, text=countOfVehicles["eastDown"], font=("Helvetica", 10))
+    vehiclesWestUpLabel = tkinter.Label(canvas, text=countOfVehicles["westUp"], font=("Helvetica", 10))
+
+    vehiclesSouthLeftLabel.place(x=930, y=540)
+    vehiclesNorthRightLabel.place(x=930, y=580)
+    vehiclesEastDownLabel.place(x=930, y=620)
+    vehiclesWestUpLabel.place(x=930, y=660)
+
+    Timer(0.5,test).start()
+
+test()
+
 button=tkinter.Button(window,text="ADD VEHICLE",bg="white",command=lambda: introduceNewVehicle(directionVariable.get(),typeVariable.get()))
 button.place(x=250,y=60)
-
 window.mainloop()
