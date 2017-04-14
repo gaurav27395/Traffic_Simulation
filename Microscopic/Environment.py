@@ -14,6 +14,11 @@ trafficMap={
 
 #Stores the statistics of each vehicle
 vehicleStatusMap={}
+countOfVehicles={}
+countOfVehicles["northRight"]=0
+countOfVehicles["southLeft"]=0
+countOfVehicles["westUp"]=0
+countOfVehicles["eastDown"]=0
 
 #Add or update vehicles.
 def addVehicleToEnvironment(id,position):
