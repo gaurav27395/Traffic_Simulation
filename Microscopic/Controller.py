@@ -138,6 +138,10 @@ canvas.create_rectangle(550, 0, 750, 300, fill='grey') #North
 canvas.create_rectangle(0, 300, 550, 460, fill='grey') #West
 canvas.create_rectangle(550, 460, 750, 800, fill='grey') #South
 canvas.create_rectangle(750, 300, 1300, 460, fill='grey') #East
+canvas.create_line(650, 0, 650, 300, fill="white", dash=(30, 20), width= 7)
+canvas.create_line(650, 460, 650, 780, fill="white", dash=(30, 20), width= 7)
+canvas.create_line(0, 375, 550, 375, fill="white", dash=(30, 20), width= 7)
+canvas.create_line(770, 375, 1300, 375, fill="white", dash=(30, 20), width= 7)
 
 simulationLabel=tkinter.Label(canvas,text="Traffic Simulation",font=("Helvetica", 20))
 simulationLabel.place(x=20,y=20)
