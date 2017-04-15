@@ -9,7 +9,11 @@ import tkinter
 import time
 
 totalVehicleCount=0
-
+Timing={}
+Timing["northRight"]=0
+Timing["southLeft"]=0
+Timing["westUp"]=0
+Timing["eastDown"]=0
 
 def createVehicle(vehicleDirection,vehicleType):
     global totalVehicleCount
@@ -39,6 +43,7 @@ def createVehicle(vehicleDirection,vehicleType):
             countOfVehicles["northRight"]=1
         else:
             countOfVehicles["northRight"]+=1
+            permanentCount["northRight"]+=1
 
     if  direction=="westUp":
         if type=="bike":
@@ -52,6 +57,7 @@ def createVehicle(vehicleDirection,vehicleType):
             countOfVehicles["westUp"]=1
         else:
             countOfVehicles["westUp"]+=1
+            permanentCount["westUp"]+=1
 
     if direction=="southLeft":
         if type=="bike":
@@ -65,6 +71,7 @@ def createVehicle(vehicleDirection,vehicleType):
             countOfVehicles["southLeft"]=1
         else:
             countOfVehicles["southLeft"]+=1
+            permanentCount["southLeft"]+=1
 
     if direction=="eastDown":
         if type=="bike":
@@ -78,6 +85,7 @@ def createVehicle(vehicleDirection,vehicleType):
             countOfVehicles["eastDown"]=1
         else:
             countOfVehicles["eastDown"]+=1
+            permanentCount["eastDown"]+=1
 
     typeOfDriver=["aggressive","non aggressive","semi aggressive"][random.randint(0,2)]
     newVehicle=Vehicle(id,fixed,typeOfDriver,type,direction)
@@ -175,8 +183,24 @@ typeVariable.set("Random")
 typeMenu=tkinter.OptionMenu(window,typeVariable,"Random","car","bus","bike")
 typeMenu.place(x=120,y=60)
 
+def calculateAverageTime():
+    for id in vehicleStatusMap:
+        vehicle=vehicleStatusMap[id]
+        if(vehicle.doNotStop and not vehicle.waitingTimeAdded):
+            vehicle.waitingTimeAdded=True
+            diffTime=vehicle.exitTime-vehicle.entryTime
+            print("##########################")
+            if(vehicle.direction=='northRight'):
+                Timing["northRight"] +=diffTime
+            if (vehicle.direction == 'southLeft'):
+                Timing["southLeft"] += diffTime
+            if (vehicle.direction == 'eastDown'):
+                Timing["eastDown"] += diffTime
+            if (vehicle.direction == 'westUp'):
+                Timing["westUp"] += diffTime
+    Timer(0.1,calculateAverageTime).start()
 
-def test():
+def displayStatistics():
     allowedDirectionLabel = tkinter.Label(canvas, text="Allowed Direction: "+getAllowedDirection()+"      ", font=("Helvetica", 20))
     allowedDirectionLabel.place(x=880,y=20)
 
@@ -192,10 +216,10 @@ def test():
     waitingTimeLabel = tkinter.Label(canvas, text="|Average Waiting Time|", font=("Helvetica", 10))
     waitingTimeLabel.place(x=1030, y=500)
 
-    southLeftLabel = tkinter.Label(canvas, text="southLeft", font=("Helvetica", 10))
-    northRightLabel = tkinter.Label(canvas, text="northRight", font=("Helvetica", 10))
-    eastDownLabel = tkinter.Label(canvas, text="eastDown", font=("Helvetica", 10))
-    westUpLabel = tkinter.Label(canvas, text="westUp", font=("Helvetica", 10))
+    southLeftLabel = tkinter.Label(canvas, text="south", font=("Helvetica", 10))
+    northRightLabel = tkinter.Label(canvas, text="north", font=("Helvetica", 10))
+    eastDownLabel = tkinter.Label(canvas, text="east", font=("Helvetica", 10))
+    westUpLabel = tkinter.Label(canvas, text="west", font=("Helvetica", 10))
 
     southLeftLabel.place(x=760, y=540)
     northRightLabel.place(x=760,y=580)
@@ -213,10 +237,22 @@ def test():
     vehiclesEastDownLabel.place(x=930, y=620)
     vehiclesWestUpLabel.place(x=930, y=660)
 
-    Timer(0.5,test).start()
+    print("Timing Count: "+str(Timing))
+    timingSouthLeftLabel = tkinter.Label(canvas, text=Timing["southLeft"]/permanentCount["southLeft"], font=("Helvetica", 10))
+    timingNorthRightLabel = tkinter.Label(canvas, text=Timing["northRight"]/permanentCount["northRight"], font=("Helvetica", 10))
+    timingEastDownLabel = tkinter.Label(canvas, text=Timing["eastDown"]/permanentCount["eastDown"], font=("Helvetica", 10))
+    timingWestUpLabel = tkinter.Label(canvas, text=Timing["westUp"]/permanentCount["westUp"], font=("Helvetica", 10))
 
-test()
+    timingSouthLeftLabel.place(x=1030, y=540)
+    timingNorthRightLabel.place(x=1030, y=580)
+    timingEastDownLabel.place(x=1030, y=620)
+    timingWestUpLabel.place(x=1030, y=660)
 
+
+    Timer(0.5,displayStatistics).start()
+
+displayStatistics()
+calculateAverageTime()
 button=tkinter.Button(window,text="ADD VEHICLE",bg="white",command=lambda: introduceNewVehicle(directionVariable.get(),typeVariable.get()))
 button.place(x=250,y=60)
 window.mainloop()
