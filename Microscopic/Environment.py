@@ -12,13 +12,22 @@ trafficMap={
 "westUp":(550,340)
 }
 
+lastPositionDictionary={}
+
 #Stores the statistics of each vehicle
 vehicleStatusMap={}
+
 countOfVehicles={}
 countOfVehicles["northRight"]=0
 countOfVehicles["southLeft"]=0
 countOfVehicles["westUp"]=0
 countOfVehicles["eastDown"]=0
+
+permanentCount={}
+permanentCount["northRight"]=1
+permanentCount["southLeft"]=1
+permanentCount["westUp"]=1
+permanentCount["eastDown"]=1
 
 #Add or update vehicles.
 def addVehicleToEnvironment(id,position):
