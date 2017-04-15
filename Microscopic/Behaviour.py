@@ -1,5 +1,6 @@
 from Microscopic.Environment import *
 from threading import Timer
+import time
 
 def generateAllScore(vehicle):
     carfollowingscore = generateCarFollowingScore(vehicle)
@@ -42,7 +43,7 @@ def generateTrafficLightScore(vehicle):
     trafficlight_distance = vehicle.getDistanceToTrafficLight()
 
     if trafficlight_distance <= 100:
-        return 10
+        return 12
     else:
         return 0
 
@@ -51,7 +52,7 @@ def generateChangeDirectionScore(vehicle):
     distance = vehicle.getDistanceToTrafficLight()
     score = 0
 
-    if distance <= 50 and vehicle.direction == getAllowedDirection() and (vehicle.turnLeft or vehicle.turnRight):
+    if distance <= 300  and (vehicle.turnLeft or vehicle.turnRight):
         score = 11
     else:
         score = 0
@@ -74,10 +75,13 @@ def carFollowExecute(vehicle):
 
 
 def trafficLightExecute(vehicle):
-    if vehicle.direction != getAllowedDirection() and vehicle.getDistanceToTrafficLight()<50:
+    if vehicle.direction != getAllowedDirection() and vehicle.getDistanceToTrafficLight()<50 and (not vehicle.doNotStop):
+        vehicle.entryTime=time.time()
         vehicle.hasToStop = True
         vehicle.pressBrake(vehicle.getDistanceToTrafficLight())
         vehicle.waitForGreenSignal()
+        vehicle.exitTime=time.time()
+        vehicle.doNotStop=True
 
 
 def emergencyBrakingExecute(vehicle):
@@ -91,6 +95,10 @@ def changeDirectionExecute(vehicle):
                 vehicle.direction="eastDown"
                 vehicle.turnLeft=False
                 vehicle.turnRight=False
+                countOfVehicles["southLeft"]-=1
+                countOfVehicles["westUp"] += 1
+
+
 
     if vehicle.turnLeft:
         if vehicle.direction == "northRight":
@@ -98,6 +106,8 @@ def changeDirectionExecute(vehicle):
                 vehicle.direction="westUp"
                 vehicle.turnLeft = False
                 vehicle.turnRight = False
+                countOfVehicles["northRight"] -= 1
+                countOfVehicles["eastDown"] += 1
 
     if vehicle.turnLeft:
         if vehicle.direction == "westUp":
@@ -105,37 +115,51 @@ def changeDirectionExecute(vehicle):
                 vehicle.direction="southLeft"
                 vehicle.turnLeft = False
                 vehicle.turnRight = False
+                countOfVehicles["westUp"] -= 1
+                countOfVehicles["northRight"] += 1
+
     if vehicle.turnLeft:
         if vehicle.direction == "eastDown":
             if vehicle.position[0]<710:
                 vehicle.direction="northRight"
                 vehicle.turnLeft = False
                 vehicle.turnRight = False
+                countOfVehicles["eastDown"] -= 1
+                countOfVehicles["southLeft"] += 1
 
     if vehicle.turnRight:
         if vehicle.direction == "southLeft":
-            if vehicle.position[1] < 430:
+            if vehicle.position[1] < 360:
+                print(vehicle.position[1])
                 vehicle.direction = "westUp"
                 vehicle.turnLeft = False
                 vehicle.turnRight = False
+                countOfVehicles["southLeft"] -= 1
+                countOfVehicles["eastDown"] += 1
 
     if vehicle.turnRight:
         if vehicle.direction == "northRight":
-            if vehicle.position[1] > 330:
+            if vehicle.position[1] > 400:
                 vehicle.direction = "eastDown"
                 vehicle.turnLeft = False
                 vehicle.turnRight = False
+                countOfVehicles["northRight"] -= 1
+                countOfVehicles["westUp"] += 1
 
     if vehicle.turnRight:
         if vehicle.direction == "westUp":
-            if vehicle.position[0] > 560:
+            if vehicle.position[0] > 700:
                 vehicle.direction = "northRight"
                 vehicle.turnLeft = False
                 vehicle.turnRight = False
+                countOfVehicles["westUp"] -= 1
+                countOfVehicles["southLeft"] += 1
 
     if vehicle.turnRight:
         if vehicle.direction == "eastDown":
-            if vehicle.position[0] < 710:
+            if vehicle.position[0] < 600:
                 vehicle.direction = "southLeft"
                 vehicle.turnLeft = False
                 vehicle.turnRight = False
+                countOfVehicles["eastDown"] -= 1
+                countOfVehicles["northRight"] += 1
